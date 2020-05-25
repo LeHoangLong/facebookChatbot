@@ -1,0 +1,15 @@
+{
+  "name": "facebookchatbot",
+  "version": "1.0.0",
+  "description": "Chat bot for facebook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Le Hoang Long",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  }
+}
