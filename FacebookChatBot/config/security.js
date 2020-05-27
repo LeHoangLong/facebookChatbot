@@ -34,11 +34,6 @@ module.exports.security = {
   //   allowCredentials: false,
   // },
 
-  cors: {
-    allRoutes: true,
-    allowOrigins: ['http://localhost:9000']
-  },
-
 
   /****************************************************************************
   *                                                                           *

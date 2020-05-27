@@ -21,6 +21,12 @@ module.exports = {
       example: 'mary.sue@example.com'
     },
 
+    role: {
+      type: 'string',
+      required: true,
+      enum: ['USER', 'ADMIN', 'RECEPTIONIST']
+    },
+
     emailStatus: {
       type: 'string',
       isIn: ['unconfirmed', 'change-requested', 'confirmed'],

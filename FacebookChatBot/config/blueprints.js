@@ -38,4 +38,5 @@ module.exports.blueprints = {
 
   shortcuts: false,
 
+  prefix: '/backend'
 };
