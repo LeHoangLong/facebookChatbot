@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import { DashBoardContainer } from './DashBoardContainer'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './common/common.css';
+import './common/reset.css';
 import {Helmet} from "react-helmet";
 import { Provider } from 'react-redux';
 

@@ -1,8 +1,6 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Container, Row, Col, NavDropdown, Dropdown } from 'react-bootstrap';
 import { NavigationBar } from './common/NavigationBar';
-import './common/common.css';
-import './common/reset.css';
 import { Page } from './common/Page'
 import Axios from 'axios';
 import { facebookInit, facebookLogin, getStatus } from './common/utility';
