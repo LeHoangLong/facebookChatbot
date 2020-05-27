@@ -65,8 +65,7 @@ module.exports.routes = {
   [`POST  ${ROUTER_PREFIX}/api/v1/entrance/update-password-and-login`]:    { action: `entrance/update-password-and-login` },
   [`POST  ${ROUTER_PREFIX}/api/v1/deliver-contact-form-message`]:          { action: `deliver-contact-form-message` },
 
-  [`GET ${ROUTER_PREFIX}/login`]: { controller: `PassportController`, action: `facebookAuth` },
-  [`GET ${ROUTER_PREFIX}/api/v1/auth/facebook/callback`]: { controller: `PassportController`, action: `facebookCallback` },
+  [`GET ${ROUTER_PREFIX}/login`]: { action: `facebook/login-token` }, //default login method
 
   [`GET ${ROUTER_PREFIX}/check_login`]: { action: `check-login` },
   [`POST ${ROUTER_PREFIX}/facebook_login_token`]: { action: `facebook/login-token` },
