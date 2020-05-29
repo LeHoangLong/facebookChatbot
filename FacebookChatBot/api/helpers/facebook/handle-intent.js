@@ -15,6 +15,11 @@ module.exports = {
     sender: {
       type: 'ref',
       required: true
+    },
+    context: {
+      type: 'ref',
+      required: false,
+      defaultsTo: {}
     }
   },
 
@@ -36,11 +41,12 @@ module.exports = {
     let found = false;
     let sender = inputs.sender;
     let data = inputs.data;
+    let context = inputs.context;
     for (let i = 0; i < data.intents.length; i++){
-        console.log(data.intents[i]);
+        //console.log(data.intents[i]);
         if (data.intents[i].confidence > 0.7){
             found = true;
-            await intentHandlerMap[data.intents[i].name].with({data: data, sender: sender});
+            await intentHandlerMap[data.intents[i].name].with({data: data, sender: sender, context: context});
         }
     }
 

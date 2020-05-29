@@ -15,6 +15,10 @@ module.exports = {
     sender: {
       type: 'ref',
       required: true
+    },
+    context: {
+      type: 'json',
+      required: false
     }
   },
 

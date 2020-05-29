@@ -22,16 +22,12 @@ async function validateAdditionalInfo(info){
 
 module.exports = {
     create: async function(req, res){
-        console.log('req.body');
-        console.log(req.body);
         let product_number = req.body.number;
-        let product_name = req.body.name;
+        let product_name = req.body.name.toLowerCase();
         let product_price = parseInt(req.body.price);
         let product_currency = req.body.currency;
         let product_description = req.body.description;
         let additionalInfo = req.body.additionalInfo;
-        sails.log('product_number');
-        sails.log(product_number);
         if (!(await sails.helpers.validateString(product_number))){
             return res.status(400).send('INVALID_PRODUCT_NUMBER');
         }
