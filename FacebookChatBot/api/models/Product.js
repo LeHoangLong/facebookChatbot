@@ -12,11 +12,13 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    id: { type: 'string', required: true },
+    number: { type: 'string', required: true, unique: true },
+    name: { type: 'string', required: true, unique: true },
     price: { type: 'number', required: true },
-    currency: { type: 'string', enum: ['VND', 'SGD', 'USD'], required: true },
+    currency: { type: 'string', isIn: ['VND', 'SGD', 'USD'], required: true },
     description: { type: 'string' },
-    additionalInfo: { type: 'json' }
+    additionalInfo: { type: 'json' },
+
 
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗

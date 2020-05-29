@@ -10,7 +10,8 @@
 
 module.exports.policies = {
 
-  '*': 'isTokenAdmin',
+  //'*': 'isTokenAdmin',
+  '*': true,
 
   // Bypass the `is-logged-in` policy for:
   'entrance/*': true,
@@ -23,7 +24,7 @@ module.exports.policies = {
   'deliver-contact-form-message': true,
   'facebook/*': true,
   
-  'check-login': 'isTokenAdmin',
+  //'check-login': 'isTokenAdmin',
   'security/*': true,
   PassportController: {
     '*': true
