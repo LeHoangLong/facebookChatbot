@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.4",
+    "pluralize": "^8.0.0",
     "sails": "^1.2.4",
     "sails-hook-apianalytics": "^2.0.3",
     "sails-hook-blueprint-count": "0.0.3",

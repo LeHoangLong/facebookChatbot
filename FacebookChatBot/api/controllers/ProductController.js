@@ -20,6 +20,8 @@ async function validateAdditionalInfo(info){
     }
 }
 
+const pluralize = require('pluralize');
+
 module.exports = {
     create: async function(req, res){
         let product_number = req.body.number;
@@ -45,6 +47,19 @@ module.exports = {
         }
         let product;
         try {
+            
+            let keyword_data = {
+                entity_name: 'Item',
+                keyword: product_name,
+                synonyms: [product_name, pluralize.plural(product_name), pluralize.singular(product_name)]
+            }
+
+            let create_entity_result = await sails.helpers.wit.createKeyword.with(keyword_data);
+
+            if (!create_entity_result){
+                return res.status(500).send('COULD_NOT_CREATE_KEYWORD_ON_WIT');
+            }
+
             product = await Product.create({
                 number: product_number,
                 name : product_name,
@@ -53,7 +68,10 @@ module.exports = {
                 description : product_description,
                 additionalInfo : additionalInfo,
             });
+
         } catch(e){
+            console.log('e');
+            console.log(e);
             if (e.code === 'E_UNIQUE'){
                 return res.status(400).send('PRODUCT_NAME_OR_NUMBER_ALREADY_EXISTED');
             }else{

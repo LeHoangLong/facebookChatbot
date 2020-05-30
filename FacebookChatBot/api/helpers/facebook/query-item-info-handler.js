@@ -39,7 +39,8 @@ module.exports = {
     let sender = inputs.sender;
     let context = inputs.context;
     const itemInfoHandlerMap = {
-      trait_value_query_type_how_much: sails.helpers.facebook.queryItemInfoHowMuchHandler
+      trait_value_query_type_how_much: sails.helpers.facebook.queryItemInfoHowMuchHandler,
+      trait_value_query_type_what: sails.helpers.facebook.queryItemInfoWhatHandler
     }
     let trait_query_types = data.traits.trait_query_type;
     if (trait_query_types !== undefined){
