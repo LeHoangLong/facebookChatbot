@@ -36,17 +36,16 @@ module.exports = {
   fn: async function (inputs) {
     const intentHandlerMap = {
       greeting: sails.helpers.facebook.greetingHandler,
-      query_item_price: sails.helpers.facebook.queryItemPriceHandler
+      query_info: sails.helpers.facebook.queryInfoHandler
     };
     let found = false;
     let sender = inputs.sender;
     let data = inputs.data;
     let context = inputs.context;
+    console.log(data);
     for (let i = 0; i < data.intents.length; i++){
-        //console.log(data.intents[i]);
         if (data.intents[i].confidence > 0.7){
-            found = true;
-            await intentHandlerMap[data.intents[i].name].with({data: data, sender: sender, context: context});
+            found = await intentHandlerMap[data.intents[i].name].with({data: data, sender: sender, context: context});
         }
     }
 

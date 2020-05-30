@@ -1,5 +1,3 @@
-const update_fn = require("update-immutable").default;
-
 module.exports = {
 
   friendlyName: 'Query item name state handler',

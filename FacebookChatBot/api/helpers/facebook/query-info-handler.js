@@ -1,7 +1,7 @@
 module.exports = {
 
 
-  friendlyName: 'Greeting handler',
+  friendlyName: 'Query info handler',
 
 
   description: '',
@@ -10,7 +10,7 @@ module.exports = {
   inputs: {
     data: {
       type: 'ref',
-      required: false
+      required: true
     },
     sender: {
       type: 'ref',
@@ -33,12 +33,15 @@ module.exports = {
 
 
   fn: async function (inputs) {
-    let reply = {
-      'text': 'Hi, How may i help you?'
-    }
+    // TODO
+    let data = inputs.data;
     let sender = inputs.sender;
-    await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});
-    return true;
+    let context = inputs.context;
+    if (await sails.helpers.facebook.queryItemInfoHandler.with({data: data, sender: sender, context: context})){
+      return true;
+    }
+    return false;
+
   }
 
 
