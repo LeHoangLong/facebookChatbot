@@ -40,12 +40,9 @@ module.exports = {
     let entities = data.entities;
     let info_key_array = entities['entity_info_key:entity_info_key'];
     let info_key_detail_array = entities['entity_info_key_detail:entity_info_key_detail'];
+    let item_context = entities['entity_context:role_item'];
     let item_names = entities['Item:name'];
 
-    console.log('info_key');
-    console.log(info_key_array);
-    console.log('info_key_detail');
-    console.log(info_key_detail_array);
     if (info_key_detail_array === undefined){
       info_key_detail_array = [];
     }
@@ -60,7 +57,7 @@ module.exports = {
         //if no current item name in context, it could be other types of query, so pass
         return false;
       }
-      item_names = [context.current_item_name]
+      item_names = [context.current_item_name];
     }else{
       for (let i = 0; i < item_names.length; i++) {
         item_names[i] = item_names[i].value;
@@ -91,8 +88,6 @@ module.exports = {
               }else{
                 pattern = new RegExp(`^${info_key}:${info_key_detail}$`);
               }
-              console.log('info_key_detail');
-              console.log(info_key_detail);
               let found = false;
               for (let j = 0; j < product.additionalInfo.length ; j++){
                 let key = product.additionalInfo[j].key;
