@@ -8,9 +8,10 @@
  * https://sailsjs.com/anatomy/config/routes-js
  */
 
-const ROUTER_PREFIX = '/backend' 
-module.exports.routes = {
+const urls = require('./urls').urls;
+const ROUTER_PREFIX = urls.ROUTER_PREFIX; 
 
+module.exports.routes = {
   //  ╦ ╦╔═╗╔╗ ╔═╗╔═╗╔═╗╔═╗╔═╗
   //  ║║║║╣ ╠╩╗╠═╝╠═╣║ ╦║╣ ╚═╗
   //  ╚╩╝╚═╝╚═╝╩  ╩ ╩╚═╝╚═╝╚═╝
@@ -70,5 +71,7 @@ module.exports.routes = {
   [`GET ${ROUTER_PREFIX}/check_login`]: { action: `check-login` },
   [`POST ${ROUTER_PREFIX}/facebook_login_token`]: { action: `facebook/login-token` },
 
-  [`GET ${ROUTER_PREFIX}/csrftoken`]: { action: `security/grant-csrf-token` }
+  [`GET ${ROUTER_PREFIX}/csrftoken`]: { action: `security/grant-csrf-token` },
+  [`GET ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook-verify` },
+  [`POST ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook` }
 };

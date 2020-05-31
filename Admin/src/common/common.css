@@ -16,6 +16,11 @@
     opacity: 1;
 }
 
+.selected {
+    background-color: #bfbdbd;
+    opacity: 1;
+}
+
 .hoverable_underline:hover {
     text-decoration: underline;
     opacity: 1;

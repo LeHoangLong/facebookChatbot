@@ -1,8 +1,7 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
-export { setToken as setToken, setTokenExpiry as setTokenExpiry } from './token';
-export { getOrders as getOrders, setCurrentOrderPageNumber as setCurrentOrderPageNumber } from '../actions/order';
 import { clearSelectedItemsInCart } from '../actions/cart'
+export { setToken as setToken, setTokenExpiry as setTokenExpiry, getCsrfToken as getCsrfToken } from './token';
+export { getOrders as getOrders, setCurrentOrderPageNumber as setCurrentOrderPageNumber } from '../actions/order';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';

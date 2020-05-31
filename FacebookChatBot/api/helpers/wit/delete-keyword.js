@@ -2,7 +2,7 @@ const axios = require('axios');
 
 module.exports = {
 
-  friendlyName: 'Create keyword',
+  friendlyName: 'Delete keyword',
 
 
   description: '',
@@ -17,10 +17,6 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    synonyms: {
-      type: 'ref',
-      required: true
-    }
   },
 
 
@@ -37,18 +33,11 @@ module.exports = {
     // TODO
     let entity_name = inputs.entity_name;
     let keyword = inputs.keyword;
-    let synonyms = inputs.synonyms;
-    return await axios.post(`https://api.wit.ai/entities/${entity_name}/keywords?v=20200513`, {
-      keyword : keyword,
-      synonyms : synonyms,
-    }, {
+    await axios.delete(`https://api.wit.ai/entities/${entity_name}/keywords/${keyword}`, {
       headers: {
         Authorization: 'Bearer ' + sails.config.token.WIT_ACCESS_TOKEN
       }
-    }).then(res => {
-      return true;
-    })
-
+    }); //first delete to ensure there is no duplicate error
   }
 
 

@@ -11,6 +11,11 @@ module.exports = {
     input: {
       type: 'string',
       required: false
+    },
+    isLengthChecked: {
+      type: 'boolean',
+      required: false,
+      default: true
     }
   },
 
@@ -27,7 +32,8 @@ module.exports = {
   fn: async function (inputs) {
     let pattern = /[<>]/;
     let input = inputs.input;
-    if (input.search(pattern) === -1 && input.length > 0){
+    let isLengthChecked = inputs.isLengthChecked;
+    if (input.search(pattern) === -1 && (input.length > 0 || isLengthChecked === false)){
       //no unescaped character
       return true;
     }else{

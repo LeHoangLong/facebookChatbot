@@ -54,6 +54,7 @@ module.exports = {
                 synonyms: [product_name, pluralize.plural(product_name), pluralize.singular(product_name)]
             }
 
+            await sails.helpers.wit.deleteKeyword.with({entity_name: 'Item', keyword: product_name}); //delete keyword so that there is no duplicate error
             let create_entity_result = await sails.helpers.wit.createKeyword.with(keyword_data);
 
             if (!create_entity_result){

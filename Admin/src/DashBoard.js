@@ -5,6 +5,7 @@ import { Page } from './common/Page'
 import Axios from 'axios';
 import { facebookInit, facebookLogin, getStatus } from './common/utility';
 import { ProductListContainer } from './ProductListContainer';
+import { PostListContainer } from './PostListContainer';
 import { Status } from './actions/status';
 import { BACKEND_URL, FRONTEND_URL } from './common/config'
 
@@ -13,7 +14,6 @@ export const DashBoard = (props) => {
     let [showMenu, setShowMenu] = useState(false);
     let [showMenuLeftPos, setShowMenuLeftPos] = useState(25);
     let [backgroundDarkenOpacity, setBackgroundDarkenOpacity] = useState(0);
-    let [currentPage, setCurrentPage] = useState('PRODUCT_PAGE');
     let previousStatus = useRef(Status.IDLE);
 
     useEffect(() => {
@@ -74,16 +74,53 @@ export const DashBoard = (props) => {
 
 
     useEffect(() => {
-        let interval;
-        if (currentPage == 'PRODUCT_PAGE'){
-            interval = setInterval(() => {
-            }, 5000);
-        }
-        return () => clearInterval(interval);
-    }, [currentPage])
+        props.goToPage('PRODUCT_PAGE');
+    }, [])
 
     useEffect(() => {
     }, []);
+
+    function selectPage(page_name){
+        props.goToPage(page_name);
+        setShowMenu(false);
+    }
+
+    function displayPageNames(pages, current_page_id){
+        let page_name_list = [];
+        for (let i = 0; i < pages.length; i++){
+            let page_name = pages[i].name;
+            let page_id = pages[i].id;
+            let selected_class = page_id === current_page_id? "selected" : '';
+            page_name_list.push(
+                <nav key={page_id} className={`p-4 hoverable ${selected_class}`} onClick={() => selectPage(page_id)}>{page_name}</nav>
+            )
+        }
+        return page_name_list;
+    }
+
+    function displayPageHeader(pages, current_page_id){
+        for (let i = 0; i < pages.length; i++){
+            let page_name = pages[i].name;
+            let page_id = pages[i].id;
+            if (page_id === current_page_id){
+                return (
+                    <h3>{page_name}</h3>
+                )
+            }
+        }
+    }
+
+
+    let pages = [
+        {
+            name: 'Products',
+            id: 'PRODUCT_PAGE'
+        },
+        {
+            name: 'Posts',
+            id: 'POST_PAGE'
+        }
+    ]
 
     return (
         <article className="position-relative fixed_height_100_vh">
@@ -91,9 +128,7 @@ export const DashBoard = (props) => {
                 <button aria-label="collapse menu" className="border-0 p-4 bg-white" onClick={() => {setShowMenu(false)}}>
                     <i className="fas fa-arrow-left h6_font_size"></i>
                 </button>
-                <nav className="p-4 hoverable">Products</nav>
-                <nav className="p-4 hoverable">Services</nav>
-                <nav className="p-4 hoverable">Receptionists</nav>
+                { displayPageNames(pages, props.current_page) }
             </div>
             <div className="fixed_height_100_vh fixed_with_100_vw z_index_1 position-absolute bg-secondary" style={{ opacity: backgroundDarkenOpacity, pointerEvents: showMenu? 'auto' : 'none' }}></div>
             <Container fluid={ true } className="border-bottom">
@@ -107,12 +142,15 @@ export const DashBoard = (props) => {
                         {/*
                             <NavigationBar textClass="h6_font_size" activeStyle={{backgroundColor: '#dedede'}} inactiveStyle={{ backgroundColor: '#faf8f9'}} currentPage={ currentPage } pages={ headers } goToPage={i => setCurrentPage(headers[i].id[0])}></NavigationBar>
                         */}
-                        <h3> Products123 </h3>
+                        { displayPageHeader(pages, props.current_page) }
                     </Col>
                 </Row>
             </Container>
-            <Page pageName="PRODUCT_PAGE" currentPage={ currentPage }>
-                <ProductListContainer active={ currentPage === 'PRODUCT_PAGE'? true : false}></ProductListContainer>
+            <Page pageName="PRODUCT_PAGE" currentPage={ props.current_page }>
+                <ProductListContainer active={ true }></ProductListContainer>
+            </Page>
+            <Page pageName="POST_PAGE" currentPage={ props.current_page }>
+                <PostListContainer active={ true }></PostListContainer>
             </Page>
         </article>
     )
