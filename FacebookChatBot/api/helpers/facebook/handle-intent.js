@@ -50,10 +50,9 @@ module.exports = {
     }
 
     if (!found){
-        let reply = {
-            'text': 'Sorry, i didn\'t get that. Would you mind rephrasing it?'
-        }
-        await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});
+      await sails.helpers.facebook.sendErrorToUser.with({ text: "Sorry, i didn't get that. Would you mind rephrasing it?", recipient: sender, context: context});
+    }else{
+      await UserContext.update({ uid: sender['id'] }).set({ context: { ...context, number_of_failure: 0 } });
     }
   }
 

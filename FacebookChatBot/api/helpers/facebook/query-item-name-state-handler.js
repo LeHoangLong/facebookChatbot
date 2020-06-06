@@ -60,15 +60,24 @@ module.exports = {
               state: ''
             }});
             await sails.helpers.facebook.handleIntent.with({ data: prev_data, sender: prev_sender, context: prev_context });
-            return;
+            return true;
           }
         }
       }
+      //if context or snapshot were not defined correctly, clear context and send back error.
+      await UserContext.update({uid: sender_id}).set({context : {
+        ...context,
+        current_item_name: item_name,
+        snapshot: {},
+        state: ''
+      }});
+      sails.helpers.facebook.sendErrorToUser.with({text: "Sorry, I'm having some issue. Could you repeat your question?", recipient: sender, context: context})
+    }else{
+      //if data is not text
+      reply['text'] = `Sorry, I can only understand text message :(`;
+      await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});
+      return true;
     }
-
-    //default is error
-    reply['text'] = `Sorry, I can only understand text message :(`;
-    await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});
   }
 
 

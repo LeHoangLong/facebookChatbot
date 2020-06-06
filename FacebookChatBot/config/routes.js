@@ -47,6 +47,8 @@ module.exports.routes = {
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝
   // …
+  [`GET ${ROUTER_PREFIX}/chatman/webhook`]: { action: `facebook/chatman/webhook-verify`},
+
   [`GET ${ROUTER_PREFIX}/webhook`]: { action: `facebook/facebook-webhook-verify`},
   [`POST ${ROUTER_PREFIX}/webhook`]: { action: `facebook/event-handler`, csrf: false},
 
@@ -72,6 +74,6 @@ module.exports.routes = {
   [`POST ${ROUTER_PREFIX}/facebook_login_token`]: { action: `facebook/login-token` },
 
   [`GET ${ROUTER_PREFIX}/csrftoken`]: { action: `security/grant-csrf-token` },
-  [`GET ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook-verify` },
-  [`POST ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook` }
+  //[`GET ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook-verify` },
+  //[`POST ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook` }
 };

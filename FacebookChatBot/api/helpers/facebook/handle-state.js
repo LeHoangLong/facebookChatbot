@@ -41,13 +41,16 @@ module.exports = {
     let reply = {}; 
     const stateHandlerMap = {
       QUERYING_ITEM_NAME: sails.helpers.facebook.queryItemNameStateHandler,
+      CHECK_IF_USER_WANT_TO_SPEAK_TO_HUMAN: sails.helpers.facebook.doesUserWantToSpeakToHumanStateHandler
     };
 
     if (context['state'] in stateHandlerMap){
-      await stateHandlerMap[context['state']].with({data: data, sender: sender, context: context});
+      return await stateHandlerMap[context['state']].with({data: data, sender: sender, context: context});
     }else{
       reply['text'] = 'Sorry, i am facing some problem. Could you repeat your question?';
       await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});
+      await UserContext.update({uid: sender_id}).set({...context, state: ''});
+      return true;
     }
   }
 

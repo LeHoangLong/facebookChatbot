@@ -46,10 +46,11 @@ module.exports = {
     if (user === undefined){
       //if no other user, this is set to admin
       let user_count = await User.count();
-      if (user_count === 0){
-          user = await User.create({ fullName: user_profile.name, emailAddress: user_profile.email, role: 'ADMIN', password: await sails.helpers.makePassword.with({password_length: 12})}).fetch();
+      //if (user_count === 0){
+      if (true){
+        user = await User.create({ fullName: user_profile.name, emailAddress: user_profile.email, role: 'ADMIN', password: await sails.helpers.makePassword.with({password_length: 12})}).fetch();
       }else{
-          res.status(404).send('USER_NOT_FOUND');    
+        res.status(404).send('USER_NOT_FOUND');    
       }
     }
     

@@ -1,7 +1,7 @@
 const ROUTER_PREFIX = '/backend';
 
 module.exports.urls = {
-    BASE_URL: 'https://2b388262efea.ap.ngrok.io',
+    BASE_URL: 'https://tunnel.mysuperawesomeweb.co.uk',
     ROUTER_PREFIX: ROUTER_PREFIX,
-    FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL: `${ROUTER_PREFIX}/facebook/post_comment_event_webhook`
+    FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL: `${ROUTER_PREFIX}/webhook`
 }
