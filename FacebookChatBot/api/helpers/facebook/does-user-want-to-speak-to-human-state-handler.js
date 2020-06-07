@@ -39,13 +39,18 @@ module.exports = {
     let data = inputs.data;
     let context = inputs.context;
 
-    console.log('data: ');
-    console.log(data);
     if (data.text.toUpperCase() === 'YES'){
       //user wants to speak to human.
-      reply = {
-        text: 'I have informed my colleagues. They will contact you as soon as possible.'
-      }    
+      let pass_thread_control_success = await sails.helpers.facebook.passThreadControl.with({recipient: sender, target_app_id: sails.config.token.SECONDARY_APP_ID, page_access_token: sails.config.token.FACEBOOK_PAGE_ACCESS_TOKEN});
+      if (pass_thread_control_success){
+        reply = {
+          text: 'I have informed my colleagues. They will contact you as soon as possible.'
+        }    
+      }else{
+        reply = {
+          text: 'Hmm, seems like my colleagues are not available. Would you like to give me another chance?'
+        }
+      }
       await UserContext.update({ uid: sender['id'] }).set({ context: { ...context, state : '', number_of_failure: 0 } });
       await sails.helpers.facebook.replyToUser.with({ reply: reply, recipient: sender})
       return true;

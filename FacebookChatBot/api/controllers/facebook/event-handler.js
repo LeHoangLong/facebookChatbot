@@ -8,6 +8,8 @@ module.exports = async function(req, res){
         //message event
         for (let i = 0; i < body.entry.length; i++){
           let entry = body.entry[i];
+          console.log('entry');
+          console.log(entry);
           if ('messaging' in entry){
             console.log('messages: ');
             console.log(entry.messaging[0])

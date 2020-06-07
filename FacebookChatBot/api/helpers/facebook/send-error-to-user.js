@@ -37,7 +37,7 @@ module.exports = {
     // TODO
     let context = inputs.context;
     let recipient = inputs.recipient;
-    if (context.number_of_failure === undefined || context.number_of_failure < 2){
+    if (context.number_of_failure === undefined || context.number_of_failure < 1){
 
       await UserContext.update({ uid: recipient['id'] }).set({ context: { ...context, number_of_failure: context.number_of_failure===undefined? 1 : context.number_of_failure + 1 } });
       
