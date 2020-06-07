@@ -26,8 +26,5 @@ module.exports.policies = {
   
   //'check-login': 'isTokenAdmin',
   'security/*': true,
-  PassportController: {
-    '*': true
-  }
 
 };

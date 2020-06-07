@@ -40,6 +40,12 @@ email status until they click the link in the confirmation email.`
       description: 'A still-unconfirmed email address that this user wants to change to (if relevant).'
     },
 
+    role: {
+      type: 'string',
+      required: true,
+      enum: ['USER', 'ADMIN', 'RECEPTIONIST']
+    },
+
     password: {
       type: 'string',
       required: true,

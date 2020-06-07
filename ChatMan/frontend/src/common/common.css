@@ -1,0 +1,176 @@
+
+.no_outline:focus {
+    outline: none;
+}
+
+.rounded_top_right {
+    border-top-right-radius: 5px;
+}
+
+.opacity_5 {
+    opacity: 0.5
+}
+
+.hoverable:hover {
+    background-color: #dedede;
+    opacity: 1;
+}
+
+.selected {
+    background-color: #bfbdbd;
+    opacity: 1;
+}
+
+.hoverable_underline:hover {
+    text-decoration: underline;
+    opacity: 1;
+}
+
+.navbar_background {
+    background-color: #faf8f9;
+}
+
+.low_background {
+    background-color: #c5c5c5;
+}
+
+.hoverable_text:hover {
+    color: black;
+    opacity: 1;
+}
+
+.zoom_on_hover:hover {
+    transform: scale(1.1); 
+}
+
+.click_through {
+    pointer-events: none;
+}
+
+.clickable {
+    pointer-events: auto
+}
+
+
+.partial_underline {
+    content: '';
+    width: 60%;
+    margin-left: 20%;
+    background-color: grey;
+    height: 2px;
+    bottom: -4px;
+}
+
+.cursor_pointer {
+    cursor: pointer;
+}
+
+.border_1px {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.fixed_height_25_vh {
+    height: 25vh;
+}
+
+.fixed_height_50_vh {
+    height: 50vh;
+}
+
+.fixed_height_100_vh {
+    height: 100vh;
+}
+
+.fixed_with_25_vw {
+    width: 25vw;;
+}
+
+.fixed_with_100_vw {
+    width: 100vw;;
+}
+
+.absolute_left_edge {
+    position: absolute;
+    left: 0;
+}
+
+.absolute_right_edge {
+    position: absolute;
+    right: 0;
+}
+
+.absolute_under_bottom_edge {
+    position: absolute;
+    top: 100%;
+}
+
+.border_radius_10px {
+    border-radius: 10px;
+}
+
+.brief_text {
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.overflow_y_scroll {
+    overflow-y: auto;
+}
+
+.overflow_x_scroll {
+    overflow-x: auto;
+}
+
+.overflow_x_hidden {
+    overflow-x: hidden;
+}
+
+.overflow_y_hidden {
+    overflow-x: hidden;
+}
+
+.fadeOut{
+    opacity:0;
+    transition: opacity 0.5s;
+
+}
+
+.fadeIn{
+    opacity:1;
+    transition: opacity 0.5s;
+}
+
+.fixed_bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.width_0 {
+    width: 0%;
+}
+
+.absolute_hide_right_edge {
+    position: absolute;
+    right: -1000px;
+}
+
+.display_none {
+    display: none;
+}
+
+.display_flex {
+    display: flex;
+}
+
+.z_index_1 {
+    z-index: 1;
+}
+
+.z_index_2 {
+    z-index: 2;
+}
+
+

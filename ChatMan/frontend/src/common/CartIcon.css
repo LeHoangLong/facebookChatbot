@@ -1,0 +1,14 @@
+
+.notification {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: red;
+    z-index: 1;
+    border-radius: 50%;
+    overflow: visible;
+    display: inline-block;
+    width: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
