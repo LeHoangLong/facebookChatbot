@@ -6,7 +6,7 @@ import Axios from 'axios';
 import { facebookInit, facebookLogin, getStatus } from './common/utility';
 import { Status } from './actions/status';
 import { BACKEND_URL, FRONTEND_URL } from './common/config'
-import { ChatWindow } from './ChatWindow'
+import { ChatWindowContainer } from './ChatWindowContainer'
 
 
 export const DashBoard = (props) => {
@@ -30,9 +30,7 @@ export const DashBoard = (props) => {
                         console.log('res');
                         console.log(res);
                         let facebook_token = res.accessToken;
-                        return Axios.post(`${BACKEND_URL}/facebook_login_token`, {
-                            'token': facebook_token,
-                        })
+                        props.logIn(facebook_token);
                     })
                 });
             }
@@ -142,7 +140,7 @@ export const DashBoard = (props) => {
                 </Row>
             </Container>
             <Page pageName="MESSAGE_PAGE" currentPage={ props.current_page }>
-                <ChatWindow></ChatWindow>
+                <ChatWindowContainer></ChatWindowContainer>
             </Page>
         </article>
     )

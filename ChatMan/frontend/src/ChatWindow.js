@@ -4,8 +4,9 @@ import 'react-chat-widget/lib/styles.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import Axios from 'axios';
 import { BACKEND_URL } from './common/config';
+import { getStatus } from './common/utility';
 
-export const ChatWindow = () => {
+export const ChatWindow = (props) => {
     let  [messageList, setMessageList] = useState([]);
 
     function getPendingMessages() {
@@ -17,13 +18,18 @@ export const ChatWindow = () => {
     }
 
     useEffect(() => {
-        getPendingMessages();
-        let interval = setInterval(() => {
-            //getPendingMessages();
-        }, 50000);
-
-        return () => clearInterval(interval);
-    }, [])
+        console.log('props.status');
+        console.log(props.status);
+        let status = getStatus(props.status, 'LOGIN_STATUS')
+        if (status && status.status === 'SUCCESS'){
+            getPendingMessages();
+            let interval = setInterval(() => {
+                //getPendingMessages();
+            }, 50000);
+            
+            return () => clearInterval(interval);
+        }
+    }, [props.status])
 
     return (
         <Container fluid={true} className="fixed_height_100_vh">

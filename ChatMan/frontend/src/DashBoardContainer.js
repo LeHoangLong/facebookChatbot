@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { DashBoard } from './DashBoard';
-import { checkIfLoggedIn } from './actions/product'
+import { checkIfLoggedIn, logIn } from './actions/login'
 import { goToPage, setTokenExpiry, setToken, getCsrfToken } from './actions/index'
 
 
@@ -15,7 +15,8 @@ const mapDispatchToProps = {
     getCsrfToken,
     setToken,
     setTokenExpiry,
-    goToPage
+    goToPage,
+    logIn
 }
 
 export const DashBoardContainer = connect(mapStateToProps, mapDispatchToProps)(DashBoard);

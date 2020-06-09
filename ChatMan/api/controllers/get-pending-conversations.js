@@ -29,20 +29,16 @@ module.exports = {
       if (conversation){
         let latest_message = await Message.find({ conversation: conversation.id }).sort('createdAt DESC').limit(1);
         latest_message = latest_message[0];
-        console.log('1');
         console.log(latest_message);
         let author = await MessageAuthor.findOne({ id: latest_message.author });
-        console.log('2');
         console.log(author);
         let facebook_user = await FacebookUser.findOne({ message_author: author.id });
-        console.log('3');
         
         if (facebook_user){
           //if is facebook user
           latest_message.author_name = facebook_user.name;  
         }else {
           let receptionist = await User.findOne({ message_author: author.id });
-          console.log('5');
           if (receptionist){
             latest_message.author_name = receptionist.fullName;
           }else{
