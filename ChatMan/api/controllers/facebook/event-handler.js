@@ -10,6 +10,11 @@ module.exports = async function(req, res){
           let entry = body.entry[i];
           console.log('entry');
           console.log(entry);
+          if ('messaging' in entry){
+            console.log('messages: ');
+            console.log(entry.messaging[0])
+            await sails.helpers.facebook.eventHandler(entry.messaging[0]);
+          }
         }
   }else{
       res.status(403).send();

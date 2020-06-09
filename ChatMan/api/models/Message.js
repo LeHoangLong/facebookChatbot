@@ -16,11 +16,6 @@ module.exports = {
     author: {
       model: 'messageauthor'
     },
-    sent_time: {
-      type: 'string',
-      columnType: 'datetime',
-      defaultsTo: ''
-    },
     conversation: {
       model: 'conversation'
     }
@@ -40,13 +35,5 @@ module.exports = {
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
   },
-
-  beforeCreate: function (valuesToSet, proceed) {
-    // set to current time
-    if (valuesToSet.sent_time === ''){
-      valuesToSet.sent_time = Date.now();
-    }
-    return proceed();
-  }
 };
 

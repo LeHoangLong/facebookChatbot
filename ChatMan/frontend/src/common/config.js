@@ -1,2 +1,2 @@
-export const BACKEND_URL = '/backend';
-export const FRONTEND_URL = '';
+export const BACKEND_URL = '/chatman';
+export const FRONTEND_URL = '/chatman';

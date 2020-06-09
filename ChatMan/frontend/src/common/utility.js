@@ -14,7 +14,7 @@ export function createReducers(initialState, handlers) {
 export const facebookInit = (cb) => {
     window.fbAsyncInit = function() {
         window.FB.init({
-            appId            : '241161500444353',
+            appId            : '1388493331337189',
             autoLogAppEvents : true,
             xfbml            : true,
             version          : 'v7.0'

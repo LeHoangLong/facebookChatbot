@@ -20,7 +20,6 @@ ReactDOM.render(
     </Helmet>
     <Provider store={store}>
       <App></App>
-      <h1>Hello world 234</h1>
     </Provider>
   </Router>,
   document.getElementById('root')

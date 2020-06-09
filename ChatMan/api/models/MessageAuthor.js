@@ -23,16 +23,16 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
     receptionist: {
-      model: 'user',
-      unique: true,
+      collection: 'user',
+      via: 'message_author',
       required: false
     },
     facebook_user: {
-      model: 'facebookuser',
-      unique: true,
+      collection: 'facebookuser',
+      via: 'message_author',
       required: false
     },
-    conversation: {
+    conversations: {
       collection: 'conversation',
       via: 'participants'
     },

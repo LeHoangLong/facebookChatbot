@@ -174,8 +174,9 @@ without necessarily having a billing card.`
     },
 
     message_author: {
-      collection: 'messageauthor',
-      via: 'receptionist'
+      model: 'messageauthor',
+      unique: true,
+      required: false
     }
   },
 

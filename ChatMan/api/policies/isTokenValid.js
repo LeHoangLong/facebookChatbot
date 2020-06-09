@@ -26,11 +26,11 @@ module.exports = async function (req, res, proceed) {
       if (user === undefined){
         return res.status(403).send('USER_NOT_FOUND');
       }else{
-        if (user.role !== 'ADMIN'){
-          return res.status(403).send('USER_DOES_NOT_HAVE_PERMISSION');
-        }else{
+        //if (user.role !== 'ADMIN'){
+        //  return res.status(403).send('USER_DOES_NOT_HAVE_PERMISSION');
+        //}else{
           return proceed();
-        }
+        //}
       }
     }else{
       return res.status(400).send('INVALID_TOKEN');

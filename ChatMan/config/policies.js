@@ -10,7 +10,7 @@
 
 module.exports.policies = {
 
-  '*': true,
+  '*': 'isTokenValid',
 
   // Bypass the `is-logged-in` policy for:
   'entrance/*': true,
@@ -22,5 +22,9 @@ module.exports.policies = {
   'legal/view-privacy': true,
   'deliver-contact-form-message': true,
   'facebook/*': true,
+
+  'main-page': true,
+  'check-login': 'isTokenValid',
+  'security/*': true,
 
 };
