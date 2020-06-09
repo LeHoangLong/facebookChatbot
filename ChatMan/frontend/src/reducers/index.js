@@ -5,12 +5,14 @@ import { restaurantReducers } from './RestaurantReducer'
 import { endUserReducers } from './EndUserReducer'
 import { tokenReducers } from '../reducers/TokenReducer';
 import { stateReducers } from './StatusReducer';
-import { orderReducers } from '../reducers/OrderReducers'
+import { orderReducers } from '../reducers/OrderReducers';
+import { conversationReducers } from './ConversationReducer';
 
 const initialState = {
     page: undefined,
     tokens: undefined,
     status: undefined,
+    conversations: undefined
 }
 
 function updateOrderQuantity(new_obj, menu_index, dish_index, quantity){
@@ -30,6 +32,7 @@ export function rootReducer(state=initialState, action){
         page: pageReducers(state.page, action),
         tokens: tokenReducers(state.tokens, action),
         status: stateReducers(state.status, action),
+        conversations: conversationReducers(state.conversations, action)
     }
 }
 

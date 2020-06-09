@@ -9,27 +9,21 @@ import { getStatus } from './common/utility';
 export const ChatWindow = (props) => {
     let  [messageList, setMessageList] = useState([]);
 
-    function getPendingMessages() {
-        Axios.get(`${BACKEND_URL}/pending_conversations`, {
-            
-        }).then(res => {
-            console.log(res);
-        })
-    }
-
     useEffect(() => {
-        console.log('props.status');
-        console.log(props.status);
         let status = getStatus(props.status, 'LOGIN_STATUS')
         if (status && status.status === 'SUCCESS'){
-            getPendingMessages();
+            props.getPendingConversations();
             let interval = setInterval(() => {
-                //getPendingMessages();
+                //props.getPendingConversations();
             }, 50000);
             
             return () => clearInterval(interval);
         }
     }, [props.status])
+
+    function displayPendingConversations() {
+        let pending_conversation_list = [];
+    }
 
     return (
         <Container fluid={true} className="fixed_height_100_vh">
@@ -38,6 +32,7 @@ export const ChatWindow = (props) => {
                     <div className="p-4 main_color">
                         Messages
                     </div>
+                    { displayPendingConversations() }
                 </Col>
                 <Col xs={8} lg={9} className="border_1px p-0">
                 </Col>
