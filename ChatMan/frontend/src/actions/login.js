@@ -7,8 +7,6 @@ export const checkIfLoggedIn = () => {
         Axios.get(`${BACKEND_URL}/check_login`).then(res => {
             dispatch(setStatus('LOGIN_STATUS', Status.SUCCESS, ''));
         }).catch(err => {
-            console.log('err');
-            console.log(err);
             let res = err.response;
             if (res.status === 403 || res.status === 400 || res.status === 500){
                 //forbidden
@@ -23,7 +21,8 @@ export const logIn = (facebook_token) => {
         Axios.post(`${BACKEND_URL}/facebook_login_token`, {
             'token': facebook_token,
         }).then(res => {
-            dispatch(setStatus('LOGIN_STATUS', Status.SUCCESS, ''))
+            dispatch(setStatus('LOGIN_STATUS', Status.SUCCESS, res.data.user_id))
         })
     }
 }
+

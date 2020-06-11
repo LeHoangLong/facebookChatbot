@@ -55,6 +55,13 @@ module.exports = {
     }
     
     if (user !== undefined){
+      if (!user.message_author){
+        //if no message author, create 1
+        let message_author = await MessageAuthor.create({}).fetch();
+        user = (await User.update({id : user.id}).set({
+          message_author: message_author.id
+        }).fetch())[0];
+      }
       let token_data = {
         uid: user.id,
       }
@@ -63,7 +70,9 @@ module.exports = {
         httpOnly: true,
         signed: true
       })
-      return 'LOGGED_IN';
+      return {
+        user_id: user.id
+      };
       if (req.session.next !== undefined){
         //res.redirect(req.session.next);
       }else{

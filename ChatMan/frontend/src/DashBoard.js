@@ -116,7 +116,7 @@ export const DashBoard = (props) => {
     ]
 
     return (
-        <article className="position-relative fixed_height_100_vh">
+        <article className="position-relative fixed_height_100_vh d-flex flex-column" style={{ maxHeight: '100vh'}}>
             <div className="absolute_left_edge w-25 fixed_height_100_vh bg-white z_index_2" style={{ left: `-${showMenuLeftPos}%`}}>
                 <button aria-label="collapse menu" className="border-0 p-4 bg-white" onClick={() => {setShowMenu(false)}}>
                     <i className="fas fa-arrow-left h6_font_size"></i>
@@ -139,9 +139,11 @@ export const DashBoard = (props) => {
                     </Col>
                 </Row>
             </Container>
-            <Page pageName="MESSAGE_PAGE" currentPage={ props.current_page }>
-                <ChatWindowContainer></ChatWindowContainer>
-            </Page>
+            <div style={{ maxHeight: '100%', flex:'1 1 0%' }}>
+                <Page pageName="MESSAGE_PAGE" currentPage={ props.current_page }>
+                    <ChatWindowContainer></ChatWindowContainer>
+                </Page>
+            </div>
         </article>
     )
 }

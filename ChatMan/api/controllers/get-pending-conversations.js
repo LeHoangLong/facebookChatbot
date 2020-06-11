@@ -31,20 +31,7 @@ module.exports = {
         latest_message = latest_message[0];
         console.log(latest_message);
         let author = await MessageAuthor.findOne({ id: latest_message.author });
-        console.log(author);
-        let facebook_user = await FacebookUser.findOne({ message_author: author.id });
-        
-        if (facebook_user){
-          //if is facebook user
-          latest_message.author_name = facebook_user.name;  
-        }else {
-          let receptionist = await User.findOne({ message_author: author.id });
-          if (receptionist){
-            latest_message.author_name = receptionist.fullName;
-          }else{
-            latest_message.author_name = 'Anonymous';
-          }
-        }
+        latest_message.author_name = await sails.helpers.getMessageAuthorName(author);
         conversation.latest_message = latest_message;
         pending_conversations.push(conversation);
       }

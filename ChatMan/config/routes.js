@@ -78,6 +78,8 @@ module.exports.routes = {
   [`GET ${ROUTER_PREFIX}/csrftoken`]: { action: `security/grant-csrf-token` },
 
   [`GET ${ROUTER_PREFIX}/pending_conversations`]: { action: `get-pending-conversations` },
+  [`GET ${ROUTER_PREFIX}/messages`]: { action: `get-messages-of-conversation` },
+  [`POST ${ROUTER_PREFIX}/messages`]: { action: `create-message` },
   //[`GET ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook-verify` },
   //[`POST ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook` }
 };
