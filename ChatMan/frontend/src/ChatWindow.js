@@ -104,7 +104,7 @@ export const ChatWindow = (props) => {
     function displayMessage(){
         let message_array = [];
         for (let i = props.messages.length - 1; i >= 0; i--){
-            let align_items = props.messages[i].is_mine? 'align-items-end' : 'align-items-start';
+            let flex_direction = props.messages[i].is_mine? 'flex-row-reverse' : '';
             let message_style = props.messages[i].is_mine? { 
                 backgroundColor: '#4188fa',
                 borderTopRightRadius: '10px', 
@@ -115,8 +115,8 @@ export const ChatWindow = (props) => {
                 borderBottomRightRadius: '10px',
             };
             message_array.push(
-                <div className={`d-flex flex-column ${align_items} m-1 pl-4`} key={ props.messages[i].id } style={{ maxWidth: '75%', minWidth: '300px' }}>
-                    <div>
+                <div className={`d-flex ${flex_direction} m-1 pl-4 pr-4 mr-2`} key={ props.messages[i].id } style={{ minWidth: '150px' }}>
+                    <div style={{ maxWidth: '75%' }}>
                         <div>
                             {
                                 (() => {
