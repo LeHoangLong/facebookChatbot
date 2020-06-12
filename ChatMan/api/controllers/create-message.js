@@ -30,6 +30,26 @@ module.exports = {
       conversation: conversation_id,
       createdAt: timestamp
     })
+
+    let conversation_participants = await sails.models['conversation_participants__messageauthor_conversations'].find({conversation_participants: conversation_id});
+    for (let i = 0; i < conversation_participants.length; i++){
+      let participant = await MessageAuthor.findOne({id: conversation_participants[i].messageauthor_conversations});
+      let facebook_user = await FacebookUser.findOne({ message_author: participant.id })
+      if (facebook_user){
+        //reply to user
+        let message = {
+          text: message_content
+        }
+        console.log('message')
+        console.log(message)
+        console.log('facebook_user')
+        console.log(facebook_user)
+        let recipient = {
+          id: facebook_user.user_id
+        }
+        await sails.helpers.facebook.replyToUser.with({ reply: message, recipient: recipient });
+      }
+    }
     return 'OK';
   }
 

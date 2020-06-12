@@ -157,21 +157,17 @@ export const ChatWindow = (props) => {
         setDraftMessage('');
     }
 
-    function displaySendingMessages(){
-        let message_array = [];
-        for (let i = props.sending_messages.length - 1; i >= 0; i--){
-            message_array.push(
-                <div className={`d-flex flex-column align-items-end m-1 pl-4`} key={ props.messages[i].id } style={{ maxWidth: '75%', minWidth: '300px' }}>
-                    <div className="font-weight-light" style={{ fontSize: '0.8em'}}>
-                        Sending
-                    </div>
-                    <div className="p-2 message_border" style={{ backgroundColor: '#4188fa', borderTopRightRadius: '10px', borderBottomLeftRadius: '10px' }}>
-                        { props.sending_messages[i].content }
-                    </div>
-                </div>
-            )
+    function keyUpHandler(event){
+        if (event.keyCode === 13 && !event.shiftKey){
+            sendMessage();
+            event.stopPropagation();
         }
-        return message_array
+    }
+
+    function keyDownHandler(event){
+        if (event.keyCode === 13 && !event.shiftKey){
+            event.stopPropagation();
+        }
     }
 
     return (
@@ -186,7 +182,7 @@ export const ChatWindow = (props) => {
             </div>
             <div className="border_1px p-0 d-flex flex-column-reverse overflow_y_scroll scrollbar scrollbar-primary"  style={{ flexGrow: 3, maxHeight: `${chatHeight}px` }}>
                 <div className="pt-2 pb-2 pl-4 pr-4 d-flex">
-                    <textarea onChange={e => setDraftMessage(e.target.value)} value={draftMessage} rows={1} className="bg-light no_outline flex-grow-1 mr-4 pl-3 pt-2 pb-2" placeholder='Type a message' style={{ borderRadius: '10px', resize: 'none' }}></textarea>
+                    <textarea onKeyDown={e => keyDownHandler} onKeyUp={e => keyUpHandler(e)} onChange={e => setDraftMessage(e.target.value)} value={draftMessage} rows={1} className="bg-light no_outline flex-grow-1 mr-4 pl-3 pt-2 pb-2" placeholder='Type a message' style={{ borderRadius: '10px', resize: 'none' }}></textarea>
                     <Button onClick={() => sendMessage()} variant="primary">Send</Button>
                 </div>
                 { displayMessage() }

@@ -31,6 +31,7 @@ module.exports = {
     let content = message['message'];
     let sender = message['sender'];
     let sender_id = sender['id'];
+
     let facebook_user = await FacebookUser.findOne({user_id: sender_id});
 
     let message_author;
@@ -69,8 +70,6 @@ module.exports = {
     //if only 1 participant, put into pending list.
     let participants_count = await sails.models['conversation_participants__messageauthor_conversations'].count({ conversation_participants: conversation.id });
 
-    console.log('participants_count');
-    console.log(participants_count);
     if (participants_count === 1){
       let pending_conversation_list = await JsonDocument.findOrCreate({ name: 'PENDING_CONVERSATIONS' }, { name: 'PENDING_CONVERSATIONS' });
       if (!(pending_conversation_list.data.includes(conversation.id))){
