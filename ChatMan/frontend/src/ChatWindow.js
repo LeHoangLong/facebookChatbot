@@ -12,14 +12,25 @@ export const ChatWindow = (props) => {
     let [selectedConversationId, setSelectedConversationId] = useState(null);
     let [chatHeight, setChatHeight] = useState(0);
     let [draftMessage, setDraftMessage] = useState('');
+    let [isConversationJoint, setIsConversationJoint] = useState(false);
+    let [displayMessageHeight, setDisplayMessageHeight] = useState(0);
 
     const chatElement = useRef(null);
+    const textareaElement = useRef(null);
+    const joinNowElement = useRef(null); 
 
     function calculateChatHeight(){
         let vh_height = window.innerHeight;
         let rect = chatElement.current.getBoundingClientRect();
         let remaining_height = vh_height - rect.y;
         setChatHeight(remaining_height);
+
+	let text_area_height = textareaElement.current.getBoundingClientRect().height;
+	let join_now_height = joinNowElement.current.getBoundingClientRect().height;
+
+	let display_message_height = remaining_height - text_area_height - join_now_height;
+
+	setDisplayMessageHeight(display_message_height);
     }
     useEffect(() => {
         calculateChatHeight();
@@ -45,6 +56,11 @@ export const ChatWindow = (props) => {
             let conversation_id = props.pending_conversations[index].id;
             props.getMessagesOfConversation(conversation_id);
             setSelectedConversationId(conversation_id);
+	    if (props.pending_conversations[index].is_joint){
+	    	setIsConversationJoint(true);
+	    }else{
+	    	setIsConversationJoint(false);
+	    }
         }
     }
 
@@ -115,7 +131,7 @@ export const ChatWindow = (props) => {
                 borderBottomRightRadius: '10px',
             };
             message_array.push(
-                <div className={`d-flex ${flex_direction} m-1 pl-4 pr-4 mr-2`} key={ props.messages[i].id } style={{ minWidth: '150px' }}>
+                <div className={`d-flex ${flex_direction} m-1 pl-4 pr-4 mr-0`} key={ props.messages[i].id } style={{ minWidth: '150px' }}>
                     <div style={{ maxWidth: '75%' }}>
                         <div>
                             {
@@ -170,9 +186,11 @@ export const ChatWindow = (props) => {
         }
     }
 
+    let display_text_area = isConversationJoint? 'flex' : 'none';
+    let display_join_now_button = isConversationJoint? 'flex': 'none';
     return (
         <div  ref={chatElement} className="d-flex" style={{ height: '100%', maxHeight: '100%' }}>
-            <div className="border_1px p-0 overflow-hidden banner" style={{ flex: '0 0 25%' }}>
+            <div className="border_1px p-0 overflow-hidden banner" style={{ flex: '0 0 25%', maxHeight: `${chatHeight}px` }}>
                 <div className="p-4 main_color border_right_0px hide_when_screen_small" style={{ display: 'none' }}>
                     Messages
                 </div>
@@ -180,12 +198,22 @@ export const ChatWindow = (props) => {
                     { displayPendingConversations() }
                 </ListGroup>
             </div>
-            <div className="border_1px p-0 d-flex flex-column-reverse overflow_y_scroll scrollbar scrollbar-primary"  style={{ flexGrow: 3, maxHeight: `${chatHeight}px` }}>
-                <div className="pt-2 pb-2 pl-4 pr-4 d-flex">
+            <div className="border_1px p-0 d-flex flex-column-reverse overflow_y_scroll "  style={{ flexGrow: 3, maxHeight: `${chatHeight}px` }}>
+                <div ref={ textareaElement } className="pt-2 pb-2 pl-4 pr-4" style={{ display: display_text_area }}>
                     <textarea onKeyDown={e => keyDownHandler} onKeyUp={e => keyUpHandler(e)} onChange={e => setDraftMessage(e.target.value)} value={draftMessage} rows={1} className="bg-light no_outline flex-grow-1 mr-4 pl-3 pt-2 pb-2" placeholder='Type a message' style={{ borderRadius: '10px', resize: 'none' }}></textarea>
                     <Button onClick={() => sendMessage()} variant="primary">Send</Button>
                 </div>
-                { displayMessage() }
+	    	<div className="flex-grow-1 d-flex flex-column-reverse scrollbar scrollbar-primary" style={{ maxHeight: `${displayMessageHeight}px`}}>
+			{ displayMessage() }
+	    	</div>
+	    	<div  ref={ joinNowElement } className="w-100 d-flex justify-content-center bg-light border-bottom">
+	    		<Button variant="primary" className="m-4">
+	    			Join now
+	    		</Button>
+	    		<div className="m-4 d-flex align-items-center">
+	    			This user is pending support
+	    		</div>
+	    	</div>
             </div>
         </div>
     )
