@@ -171,7 +171,7 @@ export const ChatWindow = (props) => {
     }
 
     return (
-        <div  ref={chatElement} className="d-flex" style={{ maxHeight: '100%' }}>
+        <div  ref={chatElement} className="d-flex" style={{ height: '100%', maxHeight: '100%' }}>
             <div className="border_1px p-0 overflow-hidden banner" style={{ flex: '0 0 25%' }}>
                 <div className="p-4 main_color border_right_0px hide_when_screen_small" style={{ display: 'none' }}>
                     Messages

@@ -117,7 +117,7 @@ export const DashBoard = (props) => {
 
     return (
         <article className="position-relative fixed_height_100_vh d-flex flex-column" style={{ maxHeight: '100vh'}}>
-            <div className="absolute_left_edge w-25 fixed_height_100_vh bg-white z_index_2" style={{ left: `-${showMenuLeftPos}%`}}>
+            <div className="absolute_left_edge w-25 fixed_height_100_vh bg-white z_index_2" style={{ left: `-${showMenuLeftPos}%`, minWidth: '120px' }}>
                 <button aria-label="collapse menu" className="border-0 p-4 bg-white" onClick={() => {setShowMenu(false)}}>
                     <i className="fas fa-arrow-left h6_font_size"></i>
                 </button>

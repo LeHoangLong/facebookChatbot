@@ -21,18 +21,22 @@ module.exports = {
 
     // All done.
     let pending_conversations = [];
-    let pending_conversations = (await JsonDocument.findOne({ name: 'PENDING_CONVERSATIONS'}));
+    let pending_conversations_json = (await JsonDocument.findOne({ name: 'PENDING_CONVERSATIONS'}));
     let pending_conversations_id = []; 
-    if (pending_conversations){
-      pending_conversations = pending_conversations.data;
+    if (pending_conversations_json){
+      pending_conversations_id = pending_conversations_json.data;
     }
     
     for (let i = 0 ; i < pending_conversations_id.length; i++){
       let conversation = await Conversation.findOne({id: pending_conversations_id[i]});
+      console.log('conversation');
+      console.log(conversation);
+
       if (conversation){
         let latest_message = await Message.find({ conversation: conversation.id }).sort('createdAt DESC').limit(1);
         latest_message = latest_message[0];
-        console.log(latest_message);
+        console.log('latest_message: ');
+	console.log(latest_message);
         let author = await MessageAuthor.findOne({ id: latest_message.author });
         latest_message.author_name = await sails.helpers.getMessageAuthorName(author);
         conversation.latest_message = latest_message;
