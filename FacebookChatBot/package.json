@@ -11,6 +11,8 @@
     "axios": "^0.19.2",
     "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.5.9",
+    "mongodb-core": "^3.2.7",
     "nodemon": "^2.0.4",
     "pluralize": "^8.0.0",
     "sails": "^1.2.4",
