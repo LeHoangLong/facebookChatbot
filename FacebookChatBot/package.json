@@ -15,7 +15,6 @@
     "pluralize": "^8.0.0",
     "sails": "^1.2.4",
     "sails-hook-apianalytics": "^2.0.3",
-    "sails-hook-blueprint-count": "0.0.3",
     "sails-hook-organics": "^2.0.0",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^2.0.0",
