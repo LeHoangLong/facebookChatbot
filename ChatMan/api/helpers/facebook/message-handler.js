@@ -71,7 +71,7 @@ module.exports = {
     let participants_count = await sails.models['conversation_participants__messageauthor_conversations'].count({ conversation_participants: conversation.id });
 
     if (participants_count === 1){
-      let pending_conversation_list = await JsonDocument.findOrCreate({ name: 'PENDING_CONVERSATIONS' }, { name: 'PENDING_CONVERSATIONS' });
+      let pending_conversation_list = await JsonDocument.findOrCreate({ name: 'PENDING_CONVERSATIONS' }, { name: 'PENDING_CONVERSATIONS', data: [] });
       if (!(pending_conversation_list.data.includes(conversation.id))){
         await JsonDocument.update({ id: pending_conversation_list.id }).set({
           data: [

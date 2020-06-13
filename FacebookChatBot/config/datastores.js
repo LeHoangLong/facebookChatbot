@@ -52,6 +52,8 @@ module.exports.datastores = {
     // url: 'mysql://user:password@host:port/database',
     adapter: 'sails-mongo',
     url: 'mongodb://127.0.0.1:27017/chatbot'
+    //url: 'mongodb+srv://lehoanglong:facebookchatbot.com@main-ks1nw.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority',
+    //ssl: true
   },
 
 

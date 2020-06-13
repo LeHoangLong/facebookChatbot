@@ -21,9 +21,12 @@ module.exports = {
 
     // All done.
     let pending_conversations = [];
-    let pending_conversations_id = (await JsonDocument.findOne({ name: 'PENDING_CONVERSATIONS'})).data;
-    console.log('pending_conversations_id.length');
-    console.log(pending_conversations_id.length);
+    let pending_conversations = (await JsonDocument.findOne({ name: 'PENDING_CONVERSATIONS'}));
+    let pending_conversations_id = []; 
+    if (pending_conversations){
+      pending_conversations = pending_conversations.data;
+    }
+    
     for (let i = 0 ; i < pending_conversations_id.length; i++){
       let conversation = await Conversation.findOne({id: pending_conversations_id[i]});
       if (conversation){
