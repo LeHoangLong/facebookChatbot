@@ -6,6 +6,7 @@ import Axios from 'axios';
 import { BACKEND_URL } from './common/config';
 import { getStatus } from './common/utility';
 import './ChatWindow.css'
+import './common/common.css';
 
 export const ChatWindow = (props) => {
     let [messageList, setMessageList] = useState([]);
@@ -25,13 +26,14 @@ export const ChatWindow = (props) => {
         let remaining_height = vh_height - rect.y;
         setChatHeight(remaining_height);
 
-	let text_area_height = textareaElement.current.getBoundingClientRect().height;
-	let join_now_height = joinNowElement.current.getBoundingClientRect().height;
+        let text_area_height = textareaElement.current.getBoundingClientRect().height;
+        let join_now_height = joinNowElement.current.getBoundingClientRect().height;
 
-	let display_message_height = remaining_height - text_area_height - join_now_height;
+        let display_message_height = remaining_height - text_area_height - join_now_height;
 
-	setDisplayMessageHeight(display_message_height);
+        setDisplayMessageHeight(display_message_height);
     }
+
     useEffect(() => {
         calculateChatHeight();
         window.addEventListener('resize', () => {
@@ -42,6 +44,7 @@ export const ChatWindow = (props) => {
     useEffect(() => {
         let status = getStatus(props.status, 'LOGIN_STATUS')
         if (status && status.status === 'SUCCESS'){
+            props.getConversations();
             props.getPendingConversations();
             let interval = setInterval(() => {
                 //props.getPendingConversations();
@@ -51,25 +54,39 @@ export const ChatWindow = (props) => {
         }
     }, [props.status])
 
-    function selectConversation(index) {
+    
+    
+    function selectPendingConversation(index) {
         if (index < props.pending_conversations.length){
+            setIsConversationJoint(false);
             let conversation_id = props.pending_conversations[index].id;
             props.getMessagesOfConversation(conversation_id);
             setSelectedConversationId(conversation_id);
-	    if (props.pending_conversations[index].is_joint){
-	    	setIsConversationJoint(true);
-	    }else{
-	    	setIsConversationJoint(false);
-	    }
+        }
+    }
+
+    function selectConversation(index) {
+        if (index < props.conversations.length){
+            setIsConversationJoint(true);
+            let conversation_id = props.conversations[index].id;
+            props.getMessagesOfConversation(conversation_id);
+            setSelectedConversationId(conversation_id);
         }
     }
 
     useEffect(() => {
-        let selected_conversation_index = props.pending_conversations.findIndex(e => e.id === selectedConversationId); 
-        if (selected_conversation_index === -1){
-            selectConversation(0);
+        if (props.conversations.length > 0){
+            let selected_conversation_index = props.conversations.findIndex(e => e.id === selectedConversationId); 
+            if (selected_conversation_index === -1){
+                selectConversation(0);
+            }
+        }else if (props.pending_conversations.length > 0){
+            let selected_conversation_index = props.pending_conversations.findIndex(e => e.id === selectedConversationId); 
+            if (selected_conversation_index === -1 && props.pending_conversations.length > 0){
+                selectPendingConversation(0);
+            }
         }
-    }, [props.pending_conversations])
+    }, [props.conversations, props.pending_conversations])
 
     useEffect(() => {
         /*
@@ -82,39 +99,43 @@ export const ChatWindow = (props) => {
         */
     }, [selectedConversationId])
 
-    function displayPendingConversations() {
-        let pending_conversations_list = [];
+    function createConversation( index, conversation, variant, selectHandler ){
+        return (
+            <ListGroup.Item variant={ variant } onClick={e => selectHandler(index) } key={ conversation.id } className={`border_right_0px d-flex w-100 border_bottom hoverable cursor_pointer rounded-0`} style={{ maxHeight: '76px', minWidth: '37px', borderWidth: '0px', border: '0px transparent grey'}}>
+                <div className="p-0 d-flex align-items-center justify-content-center font-weight-bold rounded-circle bg-secondary mr-3 text-center" style={{ height: '50px', width: '50px', fontSize: '1.75rem', minWidth: '50px', color: 'black' }}>
+                    { conversation.latest_message.author_name[0] }
+                </div>
+                <div className="p-0 flex-column justify-content-center hide_when_screen_small" style={{ maxWidth: '75%' }}>
+                    <div style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }} className='h7_font_size font-weight-bold'>
+                        { conversation.latest_message.author_name }
+                    </div>
+                    <div style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                        { conversation.latest_message.content }
+                    </div>
+                </div>
+            </ListGroup.Item>
+        )
+    }
 
-        let selected_conversation_index = props.pending_conversations.findIndex(e => e.id === selectedConversationId); 
-        if (selected_conversation_index === -1){
-            selected_conversation_index = 0;
+    function displayPendingConversations() {
+        let conversations_list = [];
+
+        for (let i = 0; i < props.conversations.length; i++){
+            let selected_class = 'light';
+            if (props.conversations[i].id === selectedConversationId){
+                selected_class = 'secondary';
+            }
+            conversations_list.push(createConversation( i, props.conversations[i], selected_class, selectConversation));
         }
 
         for (let i = 0; i < props.pending_conversations.length; i++){
-
             let selected_class = 'light';
-            if (selected_conversation_index === i){
+            if (props.pending_conversations[i].id === selectedConversationId){
                 selected_class = 'secondary';
             }
-
-            pending_conversations_list.push(
-                <ListGroup.Item variant={ selected_class } onClick={e => selectConversation(i) } key={ props.pending_conversations[i].id } className={`border_right_0px d-flex w-100 border_bottom hoverable cursor_pointer rounded-0`} style={{ maxHeight: '76px', minWidth: '37px'}}>
-                    <div className="p-0 d-flex align-items-center justify-content-center font-weight-bold rounded-circle bg-secondary mr-3 text-center" style={{ height: '50px', width: '50px', fontSize: '1.75rem', minWidth: '50px' }}>
-                        { props.pending_conversations[i].latest_message.author_name[0] }
-                    </div>
-                    <div className="p-0 flex-column justify-content-center hide_when_screen_small" style={{ maxWidth: '75%' }}>
-                        <div style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }} className='h7_font_size font-weight-bold'>
-                            { props.pending_conversations[i].latest_message.author_name }
-                        </div>
-                        <div style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                            { props.pending_conversations[i].latest_message.content }
-                        </div>
-                    </div>
-                </ListGroup.Item>
-            )
+            conversations_list.push(createConversation( i, props.pending_conversations[i], selected_class, selectPendingConversation));
         }
-
-        return pending_conversations_list;
+        return conversations_list;
     }
 
     function displayMessage(){
@@ -186,14 +207,34 @@ export const ChatWindow = (props) => {
         }
     }
 
+    function displayJoinNowButton(){
+        let selected_conversation_index = props.pending_conversations.findIndex(e => e.id === selectedConversationId); 
+        if (selected_conversation_index !== -1){
+            if (props.pending_conversations[selected_conversation_index].status === 'JOINING'){
+                return (
+                    <Button disabled={ true } variant="primary" className="m-4" onClick={() => props.joinConversation( selectedConversationId )}>
+                        Joining
+                    </Button>
+                ) 
+            }else{
+                return (
+                    <Button variant="primary" className="m-4" onClick={() => props.joinConversation( selectedConversationId )}>
+                        Join now
+                    </Button>
+                )
+            }
+        }
+
+    }
+
     let display_text_area = isConversationJoint? 'flex' : 'none';
-    let display_join_now_button = isConversationJoint? 'flex': 'none';
+    let display_close_conversation_button = isConversationJoint? 'flex' : 'none';
+    let display_join_now_button = isConversationJoint? 'none': 'flex';
+    
+
     return (
         <div  ref={chatElement} className="d-flex" style={{ height: '100%', maxHeight: '100%' }}>
             <div className="border_1px p-0 overflow-hidden banner" style={{ flex: '0 0 25%', maxHeight: `${chatHeight}px` }}>
-                <div className="p-4 main_color border_right_0px hide_when_screen_small" style={{ display: 'none' }}>
-                    Messages
-                </div>
                 <ListGroup>
                     { displayPendingConversations() }
                 </ListGroup>
@@ -204,15 +245,25 @@ export const ChatWindow = (props) => {
                     <Button onClick={() => sendMessage()} variant="primary">Send</Button>
                 </div>
 	    	<div className="flex-grow-1 d-flex flex-column-reverse scrollbar scrollbar-primary" style={{ maxHeight: `${displayMessageHeight}px`}}>
-			{ displayMessage() }
+			    { displayMessage() }
 	    	</div>
-	    	<div  ref={ joinNowElement } className="w-100 d-flex justify-content-center bg-light border-bottom">
-	    		<Button variant="primary" className="m-4">
-	    			Join now
-	    		</Button>
-	    		<div className="m-4 d-flex align-items-center">
-	    			This user is pending support
-	    		</div>
+	    	<div  ref={ joinNowElement } >
+                <div className="w-100 justify-content-center bg-light border-bottom" style={{ display: display_join_now_button }}>
+                    { displayJoinNowButton() }
+                    <div className="m-4 d-flex align-items-center">
+                        This user is pending support
+                    </div>
+                </div>
+                
+                <div className="w-100 justify-content-end bg-light border-bottom" style={{ display: display_close_conversation_button }}>
+                    <Button variant="primary" className="mt-2 mb-2 ml-2 mr-4 my_tooltip">
+                        Close
+                        <div className="m-2 my_tooltip_text bg-dark p-2 border_radius_10px">
+                            Click to close this conversation once the issue has been resolved
+                        </div>
+                    </Button>
+                    
+                </div>
 	    	</div>
             </div>
         </div>

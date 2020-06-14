@@ -40,10 +40,6 @@ module.exports = {
         let message = {
           text: message_content
         }
-        console.log('message')
-        console.log(message)
-        console.log('facebook_user')
-        console.log(facebook_user)
         let recipient = {
           id: facebook_user.user_id
         }

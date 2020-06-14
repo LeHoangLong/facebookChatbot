@@ -148,3 +148,19 @@ background-color: #aa66cc; }
 .scrollbar-secondary {
 scrollbar-color: #aa66cc #F5F5F5;
 }
+
+.my_tooltip {
+    position: relative;
+}
+
+.my_tooltip_text {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    white-space: nowrap;
+}
+
+.my_tooltip:hover .my_tooltip_text {
+    display: block;
+}
