@@ -35,14 +35,12 @@ module.exports = {
 
   fn: async function (inputs) {
     // TODO
-    await axios.post(`https://graph.facebook.com/v7.0/me/pass_thread_control?access_token=${inputs.page_access_token}`, {
+    return await axios.post(`https://graph.facebook.com/v7.0/me/pass_thread_control?access_token=${inputs.page_access_token}`, {
       recipient: inputs.recipient,
       target_app_id: inputs.target_app_id
     }).then(res => {
-      console.log('res.data in pass-thread-control');
-      console.log(res.data);
       if ('success' in res.data){
-        return res.data.success;
+        return res.data['success'];
       }
       return false;
     }).catch(err => {

@@ -256,7 +256,7 @@ export const ChatWindow = (props) => {
                 </div>
                 
                 <div className="w-100 justify-content-end bg-light border-bottom" style={{ display: display_close_conversation_button }}>
-                    <Button variant="primary" className="mt-2 mb-2 ml-2 mr-4 my_tooltip">
+                    <Button variant="primary" className="mt-2 mb-2 ml-2 mr-4 my_tooltip" onClick={() => props.closeConversation( selectedConversationId )}>
                         Close
                         <div className="m-2 my_tooltip_text bg-dark p-2 border_radius_10px">
                             Click to close this conversation once the issue has been resolved

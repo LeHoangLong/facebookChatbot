@@ -101,6 +101,24 @@ export const joinConversation = conversation_id => {
         }).then(res => {
             console.log('res');
             console.log(res);
+        }).catch(err => {
+            dispatch(setConversationStatus(conversation_id, ''));
+        })
+    }
+}
+
+export const closeConversation = conversation_id => {
+    return dispatch => {
+        dispatch(setConversationStatus(conversation_id, 'CLOSING'));
+        Axios.delete(`${BACKEND_URL}/conversations`, {
+            data: {
+                conversation_id: conversation_id
+            }
+        }).then(res => {
+            console.log('res');
+            console.log(res);
+        }).catch(err => {
+            dispatch(setConversationStatus(conversation_id, ''));
         })
     }
 }

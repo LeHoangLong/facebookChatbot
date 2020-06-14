@@ -82,6 +82,7 @@ module.exports.routes = {
   [`POST ${ROUTER_PREFIX}/messages`]: { action: `create-message` },
   [`GET ${ROUTER_PREFIX}/conversations`]: { action: `get-conversation` },
   [`POST ${ROUTER_PREFIX}/conversations`]: { action: `join-conversation` },
+  [`DELETE ${ROUTER_PREFIX}/conversations`]: { action: `close-conversation` },
   
   //[`GET ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook-verify` },
   //[`POST ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook` }
