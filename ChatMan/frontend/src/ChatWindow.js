@@ -47,8 +47,8 @@ export const ChatWindow = (props) => {
             props.getConversations();
             props.getPendingConversations();
             let interval = setInterval(() => {
-                //props.getPendingConversations();
-            }, 50000);
+                props.getPendingConversations();
+            }, 1000);
             
             return () => clearInterval(interval);
         }
@@ -75,28 +75,44 @@ export const ChatWindow = (props) => {
     }
 
     useEffect(() => {
-        if (props.conversations.length > 0){
-            let selected_conversation_index = props.conversations.findIndex(e => e.id === selectedConversationId); 
-            if (selected_conversation_index === -1){
-                selectConversation(0);
-            }
-        }else if (props.pending_conversations.length > 0){
-            let selected_conversation_index = props.pending_conversations.findIndex(e => e.id === selectedConversationId); 
-            if (selected_conversation_index === -1 && props.pending_conversations.length > 0){
-                selectPendingConversation(0);
+        let selected_conversation_index = props.conversations.findIndex(e => e.id === selectedConversationId); 
+        let selected_pending_conversation_index = props.pending_conversations.findIndex(e => e.id === selectedConversationId); 
+        if (selected_conversation_index !== -1){
+            //if conversation is selected
+            selectConversation(selected_conversation_index);
+        }else{
+            //if conversation is not selected and neither is pending conversation
+            if (selected_pending_conversation_index === -1){
+                if (props.conversations.length > 0){
+                    //if conversation has length > 0, select 0 index
+                    selectConversation(0);
+                }else if (props.pending_conversations.length > 0){
+                    //if pending conversation has length > 0, select 0 index
+                    selectPendingConversation(0);
+                }else{
+                    //set selected conversation to null
+                    setSelectedConversationId(null);
+                }
+            }else{
+                //pending covnersation is selected
+                selectPendingConversation(selected_pending_conversation_index);
             }
         }
     }, [props.conversations, props.pending_conversations])
 
     useEffect(() => {
-        /*
-        let interval = setInterval(() => {
-            if (selectedConversationId){
-                props.getMessagesOfConversation(selectedConversationId);
-            }
-        }, 1000);
-        return () => clearInterval(interval);
-        */
+        if (selectedConversationId){
+            props.getMessagesOfConversation(selectedConversationId);
+            let interval = setInterval(() => {
+                if (selectedConversationId){
+                    props.getMessagesOfConversation(selectedConversationId);
+                }
+            }, 1000);
+            return () => clearInterval(interval);
+        }else{
+            //if no selected conversation, clear all the messages
+            props.setMessages([]);
+        }
     }, [selectedConversationId])
 
     function createConversation( index, conversation, variant, selectHandler ){
@@ -212,7 +228,7 @@ export const ChatWindow = (props) => {
         if (selected_conversation_index !== -1){
             if (props.pending_conversations[selected_conversation_index].status === 'JOINING'){
                 return (
-                    <Button disabled={ true } variant="primary" className="m-4" onClick={() => props.joinConversation( selectedConversationId )}>
+                    <Button disabled={ true } variant="primary" className="m-4">
                         Joining
                     </Button>
                 ) 
@@ -224,13 +240,46 @@ export const ChatWindow = (props) => {
                 )
             }
         }
-
+    }
+    
+    function displayCloseButton(){
+        let selected_conversation_index = props.conversations.findIndex(e => e.id === selectedConversationId); 
+        if (selected_conversation_index !== -1){
+            if (props.conversations[selected_conversation_index].status === 'CLOSING'){
+                return (
+                    <Button disabled={ true } variant="primary" className="mt-2 mb-2 ml-2 mr-4">
+                        Closing
+                    </Button>
+                ) 
+            }else{
+                return (
+                    <Button variant="primary" className="mt-2 mb-2 ml-2 mr-4 my_tooltip" onClick={() => props.closeConversation( selectedConversationId )}>
+                        Close
+                        <div className="m-2 my_tooltip_text bg-dark p-2 border_radius_10px">
+                            Click to close this conversation once the issue has been resolved
+                        </div>
+                    </Button>
+                )
+            }
+        }
     }
 
-    let display_text_area = isConversationJoint? 'flex' : 'none';
-    let display_close_conversation_button = isConversationJoint? 'flex' : 'none';
-    let display_join_now_button = isConversationJoint? 'none': 'flex';
+    let display_text_area;
+    let display_close_conversation_button;
+    let display_join_now_button;
+    let display_empty_conversation_message;
     
+    if ( props.pending_conversations.length === 0 && props.conversations.length === 0){
+        display_text_area = 'none';
+        display_close_conversation_button = 'none';
+        display_join_now_button = 'none';
+        display_empty_conversation_message = 'flex';
+    }else{
+        display_text_area = isConversationJoint? 'flex' : 'none';
+        display_close_conversation_button = isConversationJoint? 'flex' : 'none';
+        display_join_now_button = isConversationJoint? 'none': 'flex';
+        display_empty_conversation_message = 'none';
+    }
 
     return (
         <div  ref={chatElement} className="d-flex" style={{ height: '100%', maxHeight: '100%' }}>
@@ -256,13 +305,13 @@ export const ChatWindow = (props) => {
                 </div>
                 
                 <div className="w-100 justify-content-end bg-light border-bottom" style={{ display: display_close_conversation_button }}>
-                    <Button variant="primary" className="mt-2 mb-2 ml-2 mr-4 my_tooltip" onClick={() => props.closeConversation( selectedConversationId )}>
-                        Close
-                        <div className="m-2 my_tooltip_text bg-dark p-2 border_radius_10px">
-                            Click to close this conversation once the issue has been resolved
-                        </div>
-                    </Button>
-                    
+                    { displayCloseButton() }
+                </div>
+                
+                <div className="w-100 justify-content-center bg-light border-bottom" style={{ display: display_empty_conversation_message }}>
+                    <div className="m-4 d-flex align-items-center">
+                        You have no  messages
+                    </div>
                 </div>
 	    	</div>
             </div>

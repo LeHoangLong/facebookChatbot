@@ -26,11 +26,12 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     let handlersMap = {
-      message: sails.helpers.facebook.messageHandler
+      message: sails.helpers.facebook.messageHandler,
+      pass_thread_control: sails.helpers.facebook.passThreadControlHandler
     };
     let event = inputs.event;
     for (let type in handlersMap){
-        if (type in event){
+      if (type in event){
             await handlersMap[type].with({event: event});
         }
     }

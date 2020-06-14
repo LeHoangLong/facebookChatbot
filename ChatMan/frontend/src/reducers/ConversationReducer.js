@@ -9,8 +9,20 @@ const initialState = {
 }
 
 function setConversationStatus(state, action){
-    let conversation_index = state.pending_conversations.findIndex(e => e.id === action.payload.id );
+    let conversation_index = state.conversations.findIndex(e => e.id === action.payload.id );
+    let pending_conversation_index = state.pending_conversations.findIndex(e => e.id === action.payload.id );
     if (conversation_index !== -1){
+        let new_state = update(state, {
+            conversations: {
+                [conversation_index]: {
+                    status: {
+                        $set: action.payload.status
+                    }
+                }
+            }
+        })
+        return new_state;
+    }else if (pending_conversation_index !== -1){
         let new_state = update(state, {
             pending_conversations: {
                 [conversation_index]: {
@@ -70,10 +82,52 @@ function addSendingMessage(state, action){
     return new_state;
 }
 
+function movePendingConversationToJoint(state, action){
+    let conversation_id = action.payload;
+    let conversation_index = state.pending_conversations.findIndex(e => e.id === conversation_id);
+    if (conversation_index !== -1){
+        let new_state = update(state, {
+            pending_conversations: {
+                $splice: [[conversation_index, 1]]
+            },
+            conversations: {
+                $push: [state.pending_conversations[conversation_index]]
+            }
+        });
+        new_state.conversations.sort((a, b) => -(a.updatedAt - b.updatedAt));
+        return new_state;
+    }else{
+        return state;
+    }
+}
+
+function removeConversation(state, action){
+    let conversation_id = action.payload;
+    let conversation_index = state.conversations.findIndex(e => e.id === conversation_id);
+    let pending_conversation_index = state.pending_conversations.findIndex(e => e.id === conversation_id);
+    let conversation_type = conversation_index !== -1? 'conversations' : pending_conversation_index !== -1? 'pending_conversations' : null;
+    let index = conversation_index !== -1? conversation_index : pending_conversation_index !== -1? pending_conversation_index : null;
+    if (conversation_type){
+        console.log('ok');
+        let new_state = update(state, {
+            [conversation_type]: {
+                $splice: [[index, 1]]
+            }
+        })
+        console.log('new_state');
+        console.log(new_state);
+        return new_state;
+    }else{
+        return state;
+    }
+}
+
 export const conversationReducers = createReducers(initialState, {
     SET_PENDING_CONVERSATIONS: setPendingConversations,
     SET_MESSAGES: setCurrentMessages,
     ADD_SENDING_MESSAGE: addSendingMessage,
     SET_CONVERSATION_STATUS: setConversationStatus,
-    SET_CONVERSATIONS: setConversations
+    SET_CONVERSATIONS: setConversations,
+    MOVE_PENDING_CONVERSATION_TO_JOINT: movePendingConversationToJoint,
+    REMOVE_CONVERSATION: removeConversation
 });

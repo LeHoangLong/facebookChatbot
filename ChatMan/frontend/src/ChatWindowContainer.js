@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { ChatWindow } from './ChatWindow';
-import { closeConversation, getPendingConversations, getMessagesOfConversation, sendMessage, joinConversation, getConversations } from './actions/conversation';
+import { setMessages, closeConversation, getPendingConversations, getMessagesOfConversation, sendMessage, joinConversation, getConversations } from './actions/conversation';
 
 const mapStateToProps = state => ({
     status: state.status,
@@ -16,7 +16,8 @@ const mapDispatchToProps = {
     sendMessage,
     joinConversation,
     getConversations,
-    closeConversation
+    closeConversation,
+    setMessages
 }
 
 export const ChatWindowContainer = connect(mapStateToProps, mapDispatchToProps)(ChatWindow);

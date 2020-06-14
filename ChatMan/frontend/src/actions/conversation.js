@@ -93,6 +93,16 @@ export const getMessagesOfConversation = (conversation_id) => {
     }
 }
 
+export const movePendingConversationToJoint = conversation_id => ({
+    type: 'MOVE_PENDING_CONVERSATION_TO_JOINT',
+    payload: conversation_id
+})
+
+export const removeConversation = conversation_id => ({
+    type: 'REMOVE_CONVERSATION',
+    payload: conversation_id
+})
+
 export const joinConversation = conversation_id => {
     return dispatch => {
         dispatch(setConversationStatus(conversation_id, 'JOINING'));
@@ -101,6 +111,8 @@ export const joinConversation = conversation_id => {
         }).then(res => {
             console.log('res');
             console.log(res);
+            dispatch(setConversationStatus(conversation_id, ''));
+            dispatch(movePendingConversationToJoint(conversation_id));
         }).catch(err => {
             dispatch(setConversationStatus(conversation_id, ''));
         })
@@ -115,8 +127,10 @@ export const closeConversation = conversation_id => {
                 conversation_id: conversation_id
             }
         }).then(res => {
-            console.log('res');
-            console.log(res);
+            if (res.data === 'OK' || res.data.status === 'OK'){
+                dispatch(removeConversation(conversation_id));
+            }
+            dispatch(setConversationStatus(conversation_id, ''));
         }).catch(err => {
             dispatch(setConversationStatus(conversation_id, ''));
         })
