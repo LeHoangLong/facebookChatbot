@@ -29,8 +29,6 @@ module.exports = {
       message: sails.helpers.facebook.messageHandler
     };
     let event = inputs.event;
-    console.log('event 1');
-    console.log(event);
     for (let type in handlersMap){
         if (type in event){
             await handlersMap[type].with({event: event});

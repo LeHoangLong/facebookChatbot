@@ -13,12 +13,6 @@ const urls = require('./urls').urls;
 
 module.exports.bootstrap = async function() {
 
-  sails.on('lifted', async () => {
-    //let subscribed = await sails.helpers.facebook.subscribeToPostComment.with({ callback_url: urls.BASE_URL + urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL });
-    //console.log('subscribed');
-    //console.log(subscribed);
-  })
-
   // Import dependencies
   var path = require('path');
 
