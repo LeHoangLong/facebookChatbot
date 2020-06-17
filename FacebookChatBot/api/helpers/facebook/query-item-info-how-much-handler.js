@@ -51,15 +51,18 @@ module.exports = {
       }
       item_names = [context.current_item_name];
     } else {
-      for (let i = 0; i < item_names.length; i++) {
+      for (let i = 0; i < entity_item_names.length; i++) {
         item_names.push(entity_item_names[i].value);
       }
     }
 
+    let reply = {
+      text: ''
+    };
+
+    console.log('item_names');
+    console.log(item_names);
     for (let i = 0; i < item_names.length; i++) {
-      let reply = {
-        text: ''
-      };
       let item_name = item_names[i].toLowerCase();
       let product = await Product.findOne({ name: item_name });
 
@@ -123,7 +126,10 @@ module.exports = {
         await UserContext.update({ uid: sender['id'] }).set({ context: { ...context, current_item_name: item_name } });
       }
     }
-    await sails.helpers.facebook.replyToUser.with({ reply: reply, recipient: sender });
+
+    if (reply.text !== ''){
+      await sails.helpers.facebook.replyToUser.with({ reply: reply, recipient: sender });
+    }
     return item_names.length > 0;
   }
 
