@@ -33,6 +33,8 @@ module.exports = {
     };
 
     if (change.field in handlersMap){
+      console.log('change.field');
+      console.log(change.field);
       await handlersMap[change.field].with({change: change.value});
     }
 

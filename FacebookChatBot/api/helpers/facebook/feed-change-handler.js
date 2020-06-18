@@ -11,10 +11,6 @@ module.exports = {
     change: {
       type: 'ref',
       required: true
-    },
-    handlersMap: {
-      type: 'ref',
-      required: true
     }
   },
 
@@ -30,13 +26,17 @@ module.exports = {
 
   fn: async function (inputs) {
     // TODO
+    console.log('feed change handler');
     let change = inputs.change;
     
     const handlersMap = {
       comment: sails.helpers.facebook.commentItemHandler
     };
 
+    
     if (change.item in handlersMap){
+      console.log('change.item');
+      console.log(change.item);
       await handlersMap[change.item](change);
     }
     
