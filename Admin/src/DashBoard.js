@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import { Navbar, Nav, Container, Row, Col, NavDropdown, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, Row, Col, NavDropdown, Dropdown, Button } from 'react-bootstrap';
 import { NavigationBar } from './common/NavigationBar';
 import { Page } from './common/Page'
 import Axios from 'axios';
@@ -21,21 +21,24 @@ export const DashBoard = (props) => {
         props.getCsrfToken();
     }, []);
 
+    function logInFacebook(){
+    	facebookInit(() => {
+	    facebookLogin().then(res => {
+		console.log('res');
+		console.log(res);
+		let facebook_token = res.accessToken;
+		return Axios.post(`${BACKEND_URL}/facebook_login_token`, {
+		    'token': facebook_token,
+		})
+	    })
+	});
+    }
+
     useEffect(() => {
         let current_status = getStatus(props.status, 'LOGIN_STATUS');
         if (current_status!== undefined){
             if (current_status.status === Status.ERROR && previousStatus.current !== current_status.status){
                 console.log('logging in facebook');
-                facebookInit(() => {
-                    facebookLogin().then(res => {
-                        console.log('res');
-                        console.log(res);
-                        let facebook_token = res.accessToken;
-                        return Axios.post(`${BACKEND_URL}/facebook_login_token`, {
-                            'token': facebook_token,
-                        })
-                    })
-                });
             }
             previousStatus.current = current_status.status;
         }
@@ -138,12 +141,17 @@ export const DashBoard = (props) => {
                             <i className="fas fa-bars h6_font_size"></i>
                         </button>
                     </Col>
-                    <Col xs={ 11 } className="p-0 d-flex align-items-center">
+                    <Col xs={ 9 } className="p-0 d-flex align-items-center">
                         {/*
                             <NavigationBar textClass="h6_font_size" activeStyle={{backgroundColor: '#dedede'}} inactiveStyle={{ backgroundColor: '#faf8f9'}} currentPage={ currentPage } pages={ headers } goToPage={i => setCurrentPage(headers[i].id[0])}></NavigationBar>
                         */}
                         { displayPageHeader(pages, props.current_page) }
                     </Col>
+	    	    <Col xs={ 2 } className="p-0 d-flex justify-content-end">
+	    	        <Button variant="primary" onClick={ logInFacebook }>
+	                    Log in
+	                </Button>
+	    	    </Col>
                 </Row>
             </Container>
             <Page pageName="PRODUCT_PAGE" currentPage={ props.current_page }>

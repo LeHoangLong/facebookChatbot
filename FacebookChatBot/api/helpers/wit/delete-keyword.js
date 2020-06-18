@@ -33,10 +33,13 @@ module.exports = {
     // TODO
     let entity_name = inputs.entity_name;
     let keyword = inputs.keyword;
+    keyword = encodeURIComponent(keyword);
     await axios.delete(`https://api.wit.ai/entities/${entity_name}/keywords/${keyword}`, {
       headers: {
         Authorization: 'Bearer ' + sails.config.token.WIT_ACCESS_TOKEN
       }
+    }).catch(err => {
+    	console.log(err.response);
     }); //first delete to ensure there is no duplicate error
   }
 
