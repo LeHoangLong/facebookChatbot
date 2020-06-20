@@ -18,7 +18,7 @@ export const SearchBox = (props) => {
         <div className={`${styleClass} rounded  pl-4 ml-2 d-flex h6_font_size align-items-center ${props.className}`}>
             <div className="fas fa-search">
             </div>
-            <input autocomplete="no" onFocus={focusHandler} onBlur={blurHandler} type="text" className={`${inputStyleClass} flex-grow-1 mt-2 ml-2 mb-2 no_outline w-100 border-0 `} id="search_box">
+            <input autoComplete="no" onFocus={focusHandler} onBlur={blurHandler} type="text" className={`${inputStyleClass} flex-grow-1 mt-2 ml-2 mb-2 no_outline w-100 border-0 `}>
             </input>
         </div>
     )

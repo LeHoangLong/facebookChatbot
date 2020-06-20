@@ -45,8 +45,6 @@ module.exports = {
         } else {
             return res.status(500).send('COULD_NOT_CREATE_POST_IN_DATABASE');
         }
-
-    }
-
+    },
 };
 

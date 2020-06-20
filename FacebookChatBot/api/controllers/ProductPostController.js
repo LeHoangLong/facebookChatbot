@@ -26,7 +26,27 @@ module.exports = {
       }).fetch();
       
       return res.status(200).send(product_post);
-  }
+  },
 
+  update: async function (req, res) {
+    let product_post_id = req.params['id'];
+    let update_params = {};
+    
+    if ('content' in req.body){
+      update_params['content'] = req.body.content;
+    }
+
+    if ('product_references' in req.body){
+      let product_references = await sails.helpers.cleanProductReferences(req.body.product_references);
+      if (typeof(product_references) === 'string'){
+        return res.status(400).send(product_references);
+      }
+      update_params['product_references'] = product_references;
+    }
+
+
+    let post = await ProductPost.update({ id: product_post_id }).set(update_params).fetch();
+    return res.status(200).send(post);
+}
 };
 

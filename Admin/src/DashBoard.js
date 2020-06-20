@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Container, Row, Col, NavDropdown, Dropdown, Button } from 'react-bootstrap';
 import { NavigationBar } from './common/NavigationBar';
-import { Page } from './common/Page'
+import { PageContainer } from './common/PageContainer'
 import Axios from 'axios';
 import { facebookInit, facebookLogin, getStatus } from './common/utility';
 import { ProductListContainer } from './ProductListContainer';
@@ -77,7 +77,7 @@ export const DashBoard = (props) => {
 
 
     useEffect(() => {
-        props.goToPage('PRODUCT_PAGE');
+        props.goToPage('POST_PAGE');
     }, [])
 
     useEffect(() => {
@@ -154,12 +154,12 @@ export const DashBoard = (props) => {
 	    	    </Col>
                 </Row>
             </Container>
-            <Page pageName="PRODUCT_PAGE" currentPage={ props.current_page }>
-                <ProductListContainer active={ true }></ProductListContainer>
-            </Page>
-            <Page pageName="POST_PAGE" currentPage={ props.current_page }>
-                <PostListContainer active={ true }></PostListContainer>
-            </Page>
+            <PageContainer pageName="PRODUCT_PAGE">
+                <ProductListContainer active={ props.current_page === 'PRODUCT_PAGE' }></ProductListContainer>
+            </PageContainer>
+            <PageContainer pageName="POST_PAGE">
+                <PostListContainer active={ props.current_page === 'POST_PAGE' }></PostListContainer>
+            </PageContainer>
         </article>
     )
 }
