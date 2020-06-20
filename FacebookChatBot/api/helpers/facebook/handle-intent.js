@@ -42,7 +42,8 @@ module.exports = {
     let sender = inputs.sender;
     let data = inputs.data;
     let context = inputs.context;
-    console.log(data);
+    console.log('context');
+    console.log(context);
     for (let i = 0; i < data.intents.length; i++){
         if (data.intents[i].confidence > 0.7){
             found = await intentHandlerMap[data.intents[i].name].with({data: data, sender: sender, context: context});

@@ -8,10 +8,50 @@
  * For more information on seeding your app with fake data, check out:
  * https://sailsjs.com/config/bootstrap
  */
-
 const urls = require('./urls').urls;
 
 module.exports.bootstrap = async function() {
+
+  sails.on('lifted', () => {
+    setInterval(async () => {
+      let current_time = Math.floor(new Date().getTime() / 1000);
+      let most_recent_posts = await FacebookPost.find({
+        where: {},
+        skip: 0,
+        limit: 1,
+        sort: 'createdAt DESC'
+      })
+      let post_id = most_recent_posts[0].facebook_post_id
+      let comments = await sails.helpers.facebook.getPostComments.with({ post_id: post_id  });
+      for (let i = 0; i < comments.length; i++){
+        let comment_id = comments[i].id;
+        let user_id = comments[i].from.id;
+        let facebook_comment = await FacebookComment.findOne({ facebook_comment_id: comment_id });
+        if (!facebook_comment){
+          //if no existing comment found, create a new one and process it
+          await FacebookComment.create({
+            facebook_comment_id: comment_id,
+            facebook_author_id: user_id,
+            content: comments[i].message
+          });
+
+          console.log('post_id');
+          console.log(post_id);
+
+          //call comment item handler to process
+          let param = {
+            verb: 'add',
+            message: comments[i].message,
+            post_id: post_id,
+            comment_id: comment_id,
+            from: comments[i].from
+          }
+
+          await sails.helpers.facebook.commentItemHandler.with({ value: param });
+        }
+      }
+    }, 2000)
+  });
 
   // Import dependencies
   var path = require('path');

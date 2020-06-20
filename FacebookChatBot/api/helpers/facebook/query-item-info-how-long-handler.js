@@ -40,24 +40,32 @@ module.exports = {
     let entities = data.entities;
     let info_key_array = entities['entity_info_key:entity_info_key'];
     let item_context = entities['entity_context:role_item'];
-    let item_names = entities['Item:name'];
+    let entity_item_names = entities['Item:name'];
+    let item_names = [];
 
-    if (item_names === undefined) {
+    if (entity_item_names === undefined) {
       if (context.current_item_name === undefined || context.current_item_name === '') {
-        //if no current item name in context, might be other query, so pass
-        return false;
+        //if no current item name in context, need to query user for item name
+        await sails.helpers.facebook.queryItemName.with({ data: data, sender: sender, context: context })
+        return true;
       }
       item_names = [context.current_item_name];
     } else {
-      for (let i = 0; i < item_names.length; i++) {
-        item_names[i] = item_names[i].value;
+      for (let i = 0; i < entity_item_names.length; i++) {
+        item_names.push(entity_item_names[i].value);
       }
     }
 
     for (let i = 0; i < item_names.length; i++) {
       let reply = {};
       let item_name = item_names[i].toLowerCase();
-      let product = await Product.findOne({ name: item_name });
+      let product;
+      //first search based on the context
+      product = await sails.helpers.wit.getProductFromItemNameEntity.with({ entity_item_name: entity_item_names[i], context: context });
+
+      if (product === undefined){
+        product = await Product.findOne({ name: item_name });
+      }
       if (product === undefined) {
         reply['text'] = `Sorry, we don't have item ${item_name}`
       } else {

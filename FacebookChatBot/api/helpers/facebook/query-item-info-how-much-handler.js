@@ -60,38 +60,14 @@ module.exports = {
       text: ''
     };
 
-    console.log('item_names');
-    console.log(item_names);
     for (let i = 0; i < item_names.length; i++) {
       let item_name = item_names[i].toLowerCase();
-      let product = await Product.findOne({ name: item_name });
+      let product ;
+      //first search based on the context
+      product = await sails.helpers.wit.getProductFromItemNameEntity.with({ entity_item_name: entity_item_names[i], context: context });
 
-      if (product === undefined) {
-        //if no product, search in whether there is context of a post
-        if ('entities' in entity_item_names[i] && entity_item_names[i].entities.length > 0){
-          category = '';
-          attribute = '';
-          for (let j = 0; j < entity_item_names[i].entities.length; j++){
-            let sub_entity = entity_item_names[i].entities[j];
-            if (sub_entity.name == 'entity_category'){
-              category = sub_entity.value;
-            }else if (sub_entity.name == 'entity_attribute'){
-              attribute = sub_entity.value;
-            }
-          }
-
-          if ('post_context' in context){
-            if ('items' in context['post_context']){
-              let items = context['post_context']['items'];
-              for (let j = 0; j < items.length; j++){
-                if ( items[j].category === category && items[j].attribute === attribute){
-                  let product_name = items[j].product_name;
-                  product = await Product.findOne({ name: product_name });
-                }
-              }
-            }
-          }
-        }
+      if (product === undefined){
+        product = await Product.findOne({ name: item_name });
       }
 
       if (product === undefined){
@@ -120,7 +96,7 @@ module.exports = {
           }
         } else {
           //user is asking about the item price
-          let item_name = item_names[i].toLowerCase();
+          let item_name = product.name.toLowerCase();
           reply['text'] += `${item_name} is ${product.price} ${product.currency}\n`
         }
         await UserContext.update({ uid: sender['id'] }).set({ context: { ...context, current_item_name: item_name } });
