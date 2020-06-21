@@ -53,6 +53,9 @@ module.exports = {
     if (!found){
       await sails.helpers.facebook.sendErrorToUser.with({ text: "Sorry, i didn't get that. Would you mind rephrasing it?", recipient: sender, context: context});
     }else{
+      //get the latest context first before updating, otherwise it will be overwritten
+      context = await UserContext.findOne({ uid: sender['id'] });
+      context = context.context;
       await UserContext.update({ uid: sender['id'] }).set({ context: { ...context, number_of_failure: 0 } });
     }
   }

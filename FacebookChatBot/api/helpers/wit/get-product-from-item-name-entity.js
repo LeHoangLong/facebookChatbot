@@ -37,7 +37,7 @@ module.exports = {
     let entity_item_name = inputs.entity_item_name;
     let context = inputs.context;
 
-    let product;
+    let product = [];
     if ('entities' in entity_item_name && entity_item_name.entities.length > 0){
       let category = '';
       let attribute = '';

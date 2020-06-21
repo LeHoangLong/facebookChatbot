@@ -37,12 +37,17 @@ module.exports = {
     let data = inputs.data;
     let sender = inputs.sender;
     let context = inputs.context;
-    let sender_id = sender['sender_id'];
-    await UserContext.update({uid: sender_id}).set({context: {...context, state: 'QUERYING_ITEM_NAME', state_timestamp: Date.now(), snapshot: {
+    let sender_id = sender['id'];
+    console.log('sender_id 2');
+    console.log(sender_id);
+    let user_context = await UserContext.updateOne({uid: sender_id}).set({context: {...context, state: 'QUERYING_ITEM_NAME', state_timestamp: Date.now(), snapshot: {
       sender: sender,
       context: context,
       data: data
     }}});
+    user_context = await UserContext.findOne({uid: sender_id});
+    console.log('user_context');
+    console.log(user_context);
     let reply = {};
     reply['text'] = `Sorry, which item are you referring to?`;
     await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});

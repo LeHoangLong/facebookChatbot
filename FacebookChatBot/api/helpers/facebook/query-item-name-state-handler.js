@@ -40,6 +40,8 @@ module.exports = {
     let context = inputs.context;
     let reply = {};
     let sender_id = sender['id'];
+    console.log('context in state handler');
+    console.log(context);
     if (data.text !== undefined){
       let item_name = data.text;
       context = await UserContext.findOne({uid: sender_id});

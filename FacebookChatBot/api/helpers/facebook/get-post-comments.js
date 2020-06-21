@@ -1,5 +1,28 @@
 const { default: Axios } = require("axios");
 
+async function getComments(url){
+  let postComments = await Axios.get(url).then(async res => {
+    let postComments = [];
+    if ('data' in res.data){
+      postComments = res.data.data;
+      if ('paging' in res.data){
+        if ('next' in res.data.paging && res.data.paging.next.length > 0){
+          await getComments(res.data.paging.next).then(res => {
+            postComments = postComments.concat(res);
+          })
+        }
+      }
+    }
+    return postComments;
+  }).catch(err => {
+    console.log('err');
+    console.log(err.response.data);
+    return [];
+  })
+  
+  return postComments;
+}
+
 module.exports = {
 
 
@@ -36,21 +59,10 @@ module.exports = {
     let access_token = inputs.access_token;
     // Get post comments.
     var postComments = [];
-    // TODO
-    await Axios.get(`https://graph.facebook.com/v7.0/${post_id}/comments?access_token=${access_token}`).then(res => {
-      if ('data' in res.data){
-        postComments = res.data.data;
-      }
-    }).catch(err => {
-      console.log('err');
-      console.log(err.response.data);
-    })
-
+    postComments = await getComments(`https://graph.facebook.com/v7.0/${post_id}/comments?access_token=${access_token}`);
     // Send back the result through the success exit.
     return postComments;
 
   }
-
-
 };
 

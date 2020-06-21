@@ -44,9 +44,12 @@ module.exports = {
       trait_value_query_type_how_long: sails.helpers.facebook.queryItemInfoHowLongHandler
     }
     let trait_query_types = data.traits.trait_query_type;
+    console.log('trait_query_types');
+    console.log(trait_query_types);
     if (trait_query_types !== undefined){
       for (let i = 0; i < trait_query_types.length; i++){
         if (await itemInfoHandlerMap[trait_query_types[i].value].with({...inputs})){
+          console.log('query handled');
           return true;
         }
       }

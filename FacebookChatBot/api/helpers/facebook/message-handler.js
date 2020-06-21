@@ -37,7 +37,7 @@ module.exports = {
     if (!(context.context['state'] === undefined || context.context['state'] === '' || context.context['state'] === 'NONE')){
       is_message_handled = await sails.helpers.facebook.handleState.with({ data: content, sender: sender, context: context.context });
     }
-      
+
     if (!is_message_handled){
       let response = await sails.helpers.facebook.getWitMessage.with({message: received_text});
       let data = response.data;

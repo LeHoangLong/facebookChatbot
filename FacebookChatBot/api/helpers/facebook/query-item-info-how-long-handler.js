@@ -59,38 +59,48 @@ module.exports = {
     for (let i = 0; i < item_names.length; i++) {
       let reply = {};
       let item_name = item_names[i].toLowerCase();
-      let product;
+      let product_array = [];
       //first search based on the context
-      product = await sails.helpers.wit.getProductFromItemNameEntity.with({ entity_item_name: entity_item_names[i], context: context });
-
-      if (product === undefined){
-        product = await Product.findOne({ name: item_name });
+      if (entity_item_names !== undefined ){
+        product_array = await sails.helpers.wit.getProductFromItemNameEntity.with({ entity_item_name: entity_item_names[i], context: context });
       }
-      if (product === undefined) {
-        reply['text'] = `Sorry, we don't have item ${item_name}`
+      
+      if (product_array.length === 0){
+        let product = await Product.findOne({ name: item_name });
+        if (product){
+          product_array.push(product);
+        }
+      }
+
+
+      if (product_array.length === 0) {
+        reply['text'] = `Sorry, we don't have item ${item_name}\n`
       } else {
-        if (info_key_array !== undefined) {
-          for (let j = 0; j < info_key_array.length; j++) {
-            let info_key = info_key_array[j].value;
-            let pattern = new RegExp(`^${info_key}:duration$`);
-            let found = false;
-            //user is asking about a key duration
-            for (let j = 0; j < product.additionalInfo.length; j++) {
-              let key = product.additionalInfo[j].key;
-              let value = product.additionalInfo[j].value;
-              let result = key.match(pattern);
-              if (result) {
-                reply['text'] = `${info_key} for item ${item_name} is ${value}`
-                found = true;
-                break;
+        for (let i = 0; i < product_array.length; i++){
+          let product = product_array[i];
+          if (info_key_array !== undefined) {
+            for (let j = 0; j < info_key_array.length; j++) {
+              let info_key = info_key_array[j].value;
+              let pattern = new RegExp(`^${info_key}:duration$`);
+              let found = false;
+              //user is asking about a key duration
+              for (let j = 0; j < product.additionalInfo.length; j++) {
+                let key = product.additionalInfo[j].key;
+                let value = product.additionalInfo[j].value;
+                let result = key.match(pattern);
+                if (result) {
+                  reply['text'] += `- ${info_key} for item ${item_name} is ${value}\n`
+                  found = true;
+                  break;
+                }
+              }
+              
+              if (!found) {
+                reply['text'] += `- Sorry, I don't have any information about the duration of ${info_key} for item ${item_name}\n`
               }
             }
-
-            if (!found) {
-              reply['text'] = `Sorry, I don't have any information about the duration of ${info_key} for item ${item_name}`
-            }
-          }
-        } 
+          } 
+        }
         await UserContext.update({ uid: sender['id'] }).set({ context: { ...context, current_item_name: item_name } });
       }
       await sails.helpers.facebook.replyToUser.with({ reply: reply, recipient: sender });

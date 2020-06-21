@@ -77,21 +77,27 @@ module.exports = {
         }
         let item_name = item_names[i].toLowerCase();
 
-        let product;
+        let product_array = [];
         //first search based on the context
-        product = await sails.helpers.wit.getProductFromItemNameEntity.with({ entity_item_name: entity_item_names[i], context: context });
-  
-        if (product === undefined){
-          product = await Product.findOne({ name: item_name });
+        if (entity_item_names !== undefined ){
+          product_array = await sails.helpers.wit.getProductFromItemNameEntity.with({ entity_item_name: entity_item_names[i], context: context });
+        }
+        
+        if (product_array.length === 0){
+          let product = await Product.findOne({ name: item_name });
+          if (product){
+            product_array.push(product);
+          }
         }
 
-        if (info_key !== undefined){
-          if (product === undefined){
-            reply['text'] = `Sorry, we don't have item ${item_name}`
-          }else{
+        if (product_array.length === 0) {
+          reply['text'] = `Sorry, we don't have item ${item_name}`
+        } else {
+          for (let i = 0; i < product_array.length; i++){
+            let product = product_array[i];
             if (info_key === 'price'){
               //asking what is price of item
-              reply['text'] = `Price of ${item_name} is ${product.price} ${product.currency}`
+              reply['text'] = `- Price of ${item_name} is ${product.price} ${product.currency}\n`
             }else{
               let pattern;
               if (info_key_detail === undefined){
@@ -106,9 +112,9 @@ module.exports = {
                 let result = key.match(pattern);
                 if (result){
                   if (info_key_detail === undefined){
-                    reply['text'] = `${info_key} for item ${item_name} is ${value}`
+                    reply['text'] = `- ${info_key} for item ${item_name} is ${value}\n`
                   }else{
-                    reply['text'] = `${info_key_detail} of ${info_key} for item ${item_name} is ${value}`
+                    reply['text'] = `- ${info_key_detail} of ${info_key} for item ${item_name} is ${value}\n`
                   }
                   found = true;
                   break;
@@ -117,15 +123,15 @@ module.exports = {
               
               if (!found){
                 if (info_key_detail === undefined){
-                  reply['text'] = `Sorry, I don't have any information about ${info_key} for item ${item_name}`
+                  reply['text'] = `- Sorry, I don't have any information about ${info_key} for item ${item_name}\n`
                 }else{
-                  reply['text'] = `Sorry, I don't have any information about ${info_key_detail} of ${info_key} for item ${item_name}`
+                  reply['text'] = `- Sorry, I don't have any information about ${info_key_detail} of ${info_key} for item ${item_name}\n`
                 }
               }
             }
+            await UserContext.update({uid: sender['id']}).set({context: {...context, current_item_name: item_name}});
+            await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});
           }
-          await UserContext.update({uid: sender['id']}).set({context: {...context, current_item_name: item_name}});
-          await sails.helpers.facebook.replyToUser.with({reply: reply, recipient: sender});
         }
       }
     };
