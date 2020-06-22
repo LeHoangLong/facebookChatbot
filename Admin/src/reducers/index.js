@@ -6,13 +6,15 @@ import { endUserReducers } from './EndUserReducer'
 import { tokenReducers } from '../reducers/TokenReducer';
 import { stateReducers } from './StatusReducer';
 import { orderReducers } from '../reducers/OrderReducers';
-import { postReducers } from '../reducers/PostReducer'
+import { postReducers } from '../reducers/PostReducer';
+import { productReducers } from '../reducers/ProductReducer';
 
 const initialState = {
     page: undefined,
     tokens: undefined,
     status: undefined,
-    posts: undefined
+    posts: undefined,
+    products: undefined
 }
 
 function updateOrderQuantity(new_obj, menu_index, dish_index, quantity){
@@ -32,7 +34,8 @@ export function rootReducer(state=initialState, action){
         page: pageReducers(state.page, action),
         tokens: tokenReducers(state.tokens, action),
         status: stateReducers(state.status, action),
-        posts: postReducers(state.posts, action)
+        posts: postReducers(state.posts, action),
+        products: productReducers(state.products, action)
     }
 }
 

@@ -77,7 +77,7 @@ export const DashBoard = (props) => {
 
 
     useEffect(() => {
-        props.goToPage('POST_PAGE');
+        props.goToPage('PRODUCT_PAGE');
     }, [])
 
     useEffect(() => {

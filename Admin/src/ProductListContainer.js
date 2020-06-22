@@ -1,13 +1,16 @@
 import { connect } from 'react-redux';
 import { ProductList } from './ProductList';
-import { createProduct } from './actions/product'
+import { createProduct, getProducts, updateProduct } from './actions/product'
 
 const mapStateToProps = state => ({
-    status: state.status
+    status: state.status,
+    products: state.products.products
 })
 
 const mapDispatchToProps = {
-    createProduct
+    createProduct,
+    getProducts,
+    updateProduct
 }
 
 export const ProductListContainer = connect( mapStateToProps, mapDispatchToProps )(ProductList);

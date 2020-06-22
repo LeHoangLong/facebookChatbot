@@ -91,8 +91,6 @@ export const PostList = (props) => {
     }
 
     useEffect(() => {
-        console.log('props.status');
-        console.log(props.status);
         let status = getStatus(props.status, 'FACEBOOK_POST_CREATE_STATUS');
         if (status !== undefined){
             if (status.status === 'SUCCESS'){
@@ -120,8 +118,6 @@ export const PostList = (props) => {
     }
 
     function updatePost(){
-        console.log('selectedPostIndex');
-        console.log(selectedPostIndex);
         let postParams = {
             id: props.posts[selectedPostIndex].id,
             content: postContent,
@@ -206,7 +202,7 @@ export const PostList = (props) => {
 
             
             <Modal show={ showEditModal } onHide={ () => openCloseEditModal(false) }>
-                <Modal.Header closeButton>
+                <Modal.Header>
                     <Modal.Title> Edit post </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
