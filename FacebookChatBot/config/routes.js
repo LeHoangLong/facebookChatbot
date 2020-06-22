@@ -74,7 +74,7 @@ module.exports.routes = {
   [`POST ${ROUTER_PREFIX}/facebook_login_token`]: { action: `facebook/login-token` },
 
   [`GET ${ROUTER_PREFIX}/csrftoken`]: { action: `security/grant-csrf-token` },
-  [`GET ${ROUTER_PREFIX}/facebookpost`]: { action: `facebook/get-recent-facebook-posts` },
+  [`GET ${ROUTER_PREFIX}/facebookpost`]: { action: `get-recent-facebook-posts` },
   //[`GET ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook-verify` },
   //[`POST ${urls.FACEBOOK_POST_COMMENT_EVENT_CALLBACK_URL}`]: { action: `facebook/page-event-webhook` }
 };

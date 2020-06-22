@@ -17,8 +17,8 @@ module.exports.bootstrap = async function() {
       let current_time = Math.floor(new Date().getTime() / 1000);
       let most_recent_posts = await FacebookPost.find({
         where: {},
-        skip: 0,
-        limit: current_time % 2,
+        skip: current_time % 5,
+        limit: 1,
         sort: 'createdAt DESC'
       })
       if (most_recent_posts.length > 0){
@@ -50,7 +50,7 @@ module.exports.bootstrap = async function() {
           }
         }
       }
-    }, 2000)
+    }, 2000);
   });
 
   // Import dependencies
