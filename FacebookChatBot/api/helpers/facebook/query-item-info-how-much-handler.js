@@ -80,6 +80,7 @@ module.exports = {
       } else {
         for (let i = 0; i < product_array.length; i++){
           let product = product_array[i];
+          item_name = product.name;
           if (info_key_array !== undefined) {
             for (let j = 0; j < info_key_array.length; j++) {
               let info_key = info_key_array[j].value;

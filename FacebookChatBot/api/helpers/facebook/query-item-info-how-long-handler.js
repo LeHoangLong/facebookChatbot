@@ -57,7 +57,9 @@ module.exports = {
     }
 
     for (let i = 0; i < item_names.length; i++) {
-      let reply = {};
+      let reply = {
+        text: ''
+      };
       let item_name = item_names[i].toLowerCase();
       let product_array = [];
       //first search based on the context
@@ -74,10 +76,11 @@ module.exports = {
 
 
       if (product_array.length === 0) {
-        reply['text'] = `Sorry, we don't have item ${item_name}\n`
+        reply['text'] += `- Sorry, we don't have item ${item_name}\n`
       } else {
         for (let i = 0; i < product_array.length; i++){
           let product = product_array[i];
+          item_name = product.name;
           if (info_key_array !== undefined) {
             for (let j = 0; j < info_key_array.length; j++) {
               let info_key = info_key_array[j].value;

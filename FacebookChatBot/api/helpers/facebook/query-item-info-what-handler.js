@@ -95,6 +95,7 @@ module.exports = {
         } else {
           for (let i = 0; i < product_array.length; i++){
             let product = product_array[i];
+            item_name = product.name;
             if (info_key === 'price'){
               //asking what is price of item
               reply['text'] = `- Price of ${item_name} is ${product.price} ${product.currency}\n`
